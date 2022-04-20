@@ -12,14 +12,15 @@ export class ExampleController {
   @ApiOperation({ summary: 'User creation' })
   @ApiResponse({ status: 200, type: ExampleUser })
   @Post()
-  create(@Body() userDto: CreateExampleDto): Promise<ExampleUser> {
-    return this.exampleService.createUser(userDto);
+  async createUser(@Body() ExampleUser: CreateExampleDto) {
+    return this.exampleService.createUser(ExampleUser);
   }
 
   @ApiOperation({ summary: 'Getting all users' })
   @ApiResponse({ status: 200, type: [ExampleUser] })
   @Get()
-  getAll(): Promise<ExampleUser[]> {
-    return this.exampleService.getAllUsers();
+  async allUser() {
+    const users = await this.exampleService.getAllUsers();
+    return users;
   }
 }

@@ -11,21 +11,26 @@ export class ExampleService {
     private exampleRepository: Repository<ExampleUser>,
   ) {}
 
-  async createUser(dto: CreateExampleDto): Promise<ExampleUser> {
+  async createUser(ExampleUser: CreateExampleDto) {
     try {
-      const exampleUser = await this.exampleRepository.save(dto);
-      return exampleUser;
+      await this.exampleRepository
+        .createQueryBuilder()
+        .insert()
+        .values(ExampleUser)
+        .execute();
+
+      return ExampleUser;
     } catch (e) {
       throw new ConflictException(e.sqlMessage);
     }
   }
 
   async getAllUsers(): Promise<ExampleUser[]> {
-    try {
-      const exampleUsers = await this.exampleRepository.find();
+    {
+      const exampleUsers = await this.exampleRepository
+        .createQueryBuilder()
+        .getMany();
       return exampleUsers;
-    } catch (e) {
-      return e;
     }
   }
 }
