@@ -1,10 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ExampleModule } from './modules/example/example.module';
-import { ExampleUser } from './modules/example/example.entity';
+import { SignUpModule } from './modules/signup/signup.module';
 
 @Module({
   controllers: [AppController],
@@ -21,12 +20,10 @@ import { ExampleUser } from './modules/example/example.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [ExampleUser],
       synchronize: true,
       autoLoadEntities: true,
     }),
-
-    ExampleModule,
+    forwardRef(() => SignUpModule)
   ],
 })
 export class AppModule {}
