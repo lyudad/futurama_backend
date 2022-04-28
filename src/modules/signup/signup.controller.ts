@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Req, UseGuards, HttpStatus } from '@nestjs/common';
 import { SignUpService } from './signup.service';
 import { CreateUserDto } from "../dto/create.user.dto";
-import { User } from '../enteties/users.entity';
+import { UserEntity } from '../enteties/users.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { IGetUserAuthInfoRequest } from '../types/auth.interface';
 
@@ -26,16 +26,16 @@ export class SignUpController {
 
     @Get('google')
     @UseGuards(AuthGuard('google'))
-    async googleAuth(@Req() req) {}
+    async googleAuth(@Req() req:Request) {}
 
     @Get('google/redirect')
     @UseGuards(AuthGuard('google'))
-    googleAuthRedirect(@Req() req) {
+    googleAuthRedirect(@Req() req:Request) {
         return this.SignUpService.googleSignUp(req)
     }
 
     @Post('signup')
-    async add(@Body() userDto:CreateUserDto): Promise<User>{
+    async add(@Body() userDto:CreateUserDto): Promise<UserEntity>{
         try {
             return await this.SignUpService.add(userDto);
         } catch (error) {

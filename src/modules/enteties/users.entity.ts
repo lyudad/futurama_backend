@@ -8,7 +8,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
   
   @Entity()
-  export class User extends BaseEntity {
+  export class UserEntity extends BaseEntity {
     @ApiProperty({ example: '1', description: 'Unique identificator' })
     @PrimaryGeneratedColumn({ type: 'int' })
     user_id: number;
