@@ -13,6 +13,10 @@ export class SignUpService {
         private userRepository: Repository<User>
     ) {}
 
+    googleSignUp(req){
+        return req.user
+    }
+
     async add(userDto: CreateUserDto): Promise<User> {
         try {
             const hash = await bcrypt.hash(userDto.password, Number(2))  

@@ -1,6 +1,8 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { GoogleStrategy } from './modules/google/google.strategy';
+import { FacebookStrategy } from './modules/facebook/facebook.strategy';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SignUpModule } from './modules/signup/signup.module';
@@ -23,6 +25,8 @@ import { SignUpModule } from './modules/signup/signup.module';
       synchronize: true,
       autoLoadEntities: true,
     }),
+    FacebookStrategy,
+    GoogleStrategy,
     forwardRef(() => SignUpModule)
   ],
 })

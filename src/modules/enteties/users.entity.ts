@@ -33,6 +33,7 @@ import { ApiProperty } from '@nestjs/swagger';
     @Column({
       type: 'varchar',
       length: 13,
+      unique:true,
       nullable: true,
     })
     phoneNumber: string;
@@ -40,7 +41,7 @@ import { ApiProperty } from '@nestjs/swagger';
     @ApiProperty({ example: 'Freelancer', description: 'userRole' })
     @Column({
       type: 'enum',
-      enum: ['Freelancer', 'Employer'],
+      enum: ['Freelancer', 'Job Owner'],
       nullable: true,
     })
     userRole: string;
