@@ -3,8 +3,8 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function start() {
-  const PORT = process.env.PORT || 8000;
-  const app = await NestFactory.create(AppModule);
+  const PORT = 8000;
+  const app = await NestFactory.create(AppModule, { cors: true });
 
   const config = new DocumentBuilder()
     .setTitle('Futurama team')
