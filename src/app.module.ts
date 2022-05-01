@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user/user.module';
 import { UserEntity } from './modules/user/user.entity';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   controllers: [],
@@ -24,6 +25,7 @@ import { UserEntity } from './modules/user/user.entity';
       autoLoadEntities: true,
     }),
     UserModule,
+    MailModule,
   ],
 })
 export class AppModule {}
