@@ -3,7 +3,7 @@ import {
     Post,
     Body,
     Query,
-    NotFoundException,
+    NotFoundException
   } from '@nestjs/common';
   import { PasswordResetService } from './password-reset.service';
   import { UserDTO } from '../user/dto/user.dto';
@@ -19,15 +19,15 @@ import {
     @Post('reset')
     async getUserByEmail(
       @Body() UserDTO: UserDTO,
-      @Query('email') email: UserDTO,
-    ): Promise<any> {
+      @Query('email') email: UserDTO
+    ): Promise<UserDTO> {
       const user = await this.passwordResetService.findByEmail(email);
       if (!user) {
         throw new NotFoundException(`User with email ${email} was not found`);
       } else {
         const newUser = await this.passwordResetService.changePassword(
           user.id,
-          UserDTO,
+          UserDTO
         );
         return newUser;
       }
