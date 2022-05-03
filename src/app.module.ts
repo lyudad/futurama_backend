@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user/user.module';
 import { UserEntity } from './modules/user/user.entity';
 import { PasswordResetModule } from './modules/password-reset/password-reset.module';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
   controllers: [],
@@ -25,7 +26,10 @@ import { PasswordResetModule } from './modules/password-reset/password-reset.mod
       autoLoadEntities: true,
     }),
     UserModule,
+
     PasswordResetModule,
+
+    MailModule,
   ],
 })
 export class AppModule {}
