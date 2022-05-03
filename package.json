@@ -90,11 +90,9 @@
     "testEnvironment": "node"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "node-modules/.bin/eslint --max-warnings=0",
-      "prettier --write",
-      "git add",
-      "eslint --cache --fix"
+    "src/**/*.{ts,tsx}": [
+      "npm run lint",
+      "git add"
     ]
   }
 }

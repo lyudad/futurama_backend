@@ -40,10 +40,18 @@ export class PasswordResetService {
         .execute();
 
       const user = await this.findById(id);
-
       return user;
     } catch (e) {
       throw new ConflictException(e.sqlMessage);
+    }
+  }
+
+  async getAllUsers(): Promise<UserEntity[]> {
+    {
+      const exampleUsers = await this.userRepository
+        .createQueryBuilder()
+        .getMany();
+      return exampleUsers;
     }
   }
 }
