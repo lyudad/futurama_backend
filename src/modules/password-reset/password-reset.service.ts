@@ -13,20 +13,28 @@ export class PasswordResetService {
   ) {}
 
   async findByEmail(email: UserDTO): Promise<UserEntity> {
-    const user = await this.userRepository
-      .createQueryBuilder()
-      .where('email = :email', { email })
-      .getOne();
+    try {
+      const user = await this.userRepository
+        .createQueryBuilder()
+        .where('email = :email', { email })
+        .getOne();
 
-    return user;
+      return user;
+    } catch (e) {
+      throw new ConflictException(e.sqlMessage);
+    }
   }
 
   async findById(id: number): Promise<UserEntity> {
-    const user = await this.userRepository
-      .createQueryBuilder()
-      .where('id = :id', { id })
-      .getOne();
-    return user;
+    try {
+      const user = await this.userRepository
+        .createQueryBuilder()
+        .where('id = :id', { id })
+        .getOne();
+      return user;
+    } catch (e) {
+      throw new ConflictException(e.sqlMessage);
+    }
   }
 
   async changePassword(id: number, UserDTO: UserDTO): Promise<UserEntity> {
@@ -48,10 +56,14 @@ export class PasswordResetService {
 
   async getAllUsers(): Promise<UserEntity[]> {
     {
-      const exampleUsers = await this.userRepository
-        .createQueryBuilder()
-        .getMany();
-      return exampleUsers;
+      try {
+        const exampleUsers = await this.userRepository
+          .createQueryBuilder()
+          .getMany();
+        return exampleUsers;
+      } catch (e) {
+        throw new ConflictException(e.sqlMessage);
+      }
     }
   }
 }
