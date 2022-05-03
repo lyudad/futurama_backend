@@ -9,7 +9,7 @@ import * as bcrypt from 'bcrypt';
 export class PasswordResetService {
   constructor(
     @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>
+    private userRepository: Repository<UserEntity>,
   ) {}
 
   async findByEmail(email: UserDTO): Promise<UserEntity> {
