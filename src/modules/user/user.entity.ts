@@ -5,7 +5,7 @@ import * as jwt from 'jsonwebtoken';
 @Entity('user')
 export class UserEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column('text')
   firstName: string;
@@ -42,10 +42,10 @@ export class UserEntity {
     return jwt.sign(
       {
         id,
-        email,
+        email
       },
       process.env.SECRET,
-      { expiresIn: '7d' },
+      { expiresIn: '7d' }
     );
   }
 }

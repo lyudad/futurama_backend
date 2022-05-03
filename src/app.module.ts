@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user/user.module';
 import { UserEntity } from './modules/user/user.entity';
+import { PasswordResetModule } from './modules/password-reset/password-reset.module';
 import { MailModule } from './modules/mail/mail.module';
 
 @Module({
@@ -25,6 +26,9 @@ import { MailModule } from './modules/mail/mail.module';
       autoLoadEntities: true,
     }),
     UserModule,
+
+    PasswordResetModule,
+
     MailModule,
   ],
 })
