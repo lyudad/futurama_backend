@@ -22,7 +22,7 @@ export class PasswordResetController {
   async getUserByEmail(
     @Body() UserDTO: UserDTO,
     @Query('email') email: UserDTO,
-  ): Promise<UserDTO> {
+  ): Promise<UserEntity> {
     const user = await this.passwordResetService.findByEmail(email);
     if (!user) {
       throw new NotFoundException(`User with email ${email} was not found`);
@@ -38,7 +38,7 @@ export class PasswordResetController {
   @ApiOperation({ summary: 'Getting all users' })
   @ApiResponse({ status: 200, type: [UserEntity] })
   @Get()
-  async allUser() {
+  async allUser(): Promise<UserEntity[]> {
     const users = await this.passwordResetService.getAllUsers();
     return users;
   }
