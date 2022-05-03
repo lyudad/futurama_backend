@@ -91,9 +91,10 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --cache --fix",
+      "node-modules/.bin/eslint --max-warnings=0",
       "prettier --write",
-      "git add"
+      "git add",
+      "eslint --cache --fix"
     ]
   }
 }
