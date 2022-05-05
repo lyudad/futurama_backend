@@ -66,4 +66,17 @@ export class PasswordResetService {
       }
     }
   }
+  async createUser(ExampleUser: UserDTO) {
+    try {
+      await this.userRepository
+        .createQueryBuilder()
+        .insert()
+        .values(ExampleUser)
+        .execute();
+
+      return ExampleUser;
+    } catch (e) {
+      throw new ConflictException(e.sqlMessage);
+    }
+  }
 }

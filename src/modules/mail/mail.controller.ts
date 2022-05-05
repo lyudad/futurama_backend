@@ -22,7 +22,7 @@ export class MailController {
         subject: 'Futurama password reset link',
         from: this.configService.get<string>('SENDGRID_DOMAIN'),
         text: 'Please follow the link to change your password. If you have not initiated a password change, ignore this message.',
-        html: `<h1>Please follow the <a href="http://localhost:3000/password_make_new">LINK</a> to change your password. If you have not initiated a password change, ignore this message.</h1>`,
+        html: `<h1>Please follow the <a href="http://localhost:3000/password/make_new?email=${body.email}">LINK</a> to change your password. If you have not initiated a password change, ignore this message.</h1>`,
       };
 
       return await this.mailService.send(mail);
