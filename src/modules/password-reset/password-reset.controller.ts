@@ -36,10 +36,17 @@ export class PasswordResetController {
   }
 
   @ApiOperation({ summary: 'Getting all users' })
-  @ApiResponse({ status: 200, type: [UserEntity] })
+  @ApiResponse({ status: 200, type: UserEntity })
   @Get()
   async allUser(): Promise<UserEntity[]> {
     const users = await this.passwordResetService.getAllUsers();
     return users;
+  }
+
+  @ApiOperation({ summary: 'User creation' })
+  @ApiResponse({ status: 200, type: UserEntity })
+  @Post()
+  async createUser(@Body() ExampleUser: UserEntity) {
+    return this.passwordResetService.createUser(ExampleUser);
   }
 }
