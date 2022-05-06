@@ -15,7 +15,7 @@ export class UserService {
     const { email, password } = data;
     const user = await this.userRepository.findOne({ where: { email } });
 
-    if (!user || (await user.comparePassword(password))) {
+    if (!user || !(await user.comparePassword(password))) {
       throw new HttpException(
         'Invalid email or password',
         HttpStatus.BAD_REQUEST,
