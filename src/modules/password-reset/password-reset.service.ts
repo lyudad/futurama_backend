@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../user/user.entity';
 import { Repository } from 'typeorm';
@@ -12,34 +12,29 @@ export class PasswordResetService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
-  async findByEmail(email: UserDTO): Promise<UserEntity> {
-    try {
-      const user = await this.userRepository
-        .createQueryBuilder()
-        .where('email = :email', { email })
-        .getOne();
-
-      return user;
-    } catch (e) {
-      throw new ConflictException(e.sqlMessage);
-    }
-  }
-
   async findById(id: number): Promise<UserEntity> {
     try {
       const user = await this.userRepository
         .createQueryBuilder()
         .where('id = :id', { id })
         .getOne();
-      return user;
-    } catch (e) {
-      throw new ConflictException(e.sqlMessage);
+      if (!user) {
+        throw new HttpException(
+          `User with id ${id} was not found`,
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        return user;
+      }
+    } catch (error) {
+      throw error;
     }
   }
 
   async changePassword(id: number, UserDTO: UserDTO): Promise<UserEntity> {
     try {
       const hash = await bcrypt.hash(UserDTO.password, 10);
+
       await this.userRepository
         .createQueryBuilder()
         .update()
@@ -47,10 +42,9 @@ export class PasswordResetService {
         .where('id = :id', { id })
         .execute();
 
-      const user = await this.findById(id);
-      return user;
-    } catch (e) {
-      throw new ConflictException(e.sqlMessage);
+      throw new HttpException('Done', HttpStatus.OK);
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -61,22 +55,9 @@ export class PasswordResetService {
           .createQueryBuilder()
           .getMany();
         return exampleUsers;
-      } catch (e) {
-        throw new ConflictException(e.sqlMessage);
+      } catch (error) {
+        throw error;
       }
-    }
-  }
-  async createUser(ExampleUser: UserDTO) {
-    try {
-      await this.userRepository
-        .createQueryBuilder()
-        .insert()
-        .values(ExampleUser)
-        .execute();
-
-      return ExampleUser;
-    } catch (e) {
-      throw new ConflictException(e.sqlMessage);
     }
   }
 }
