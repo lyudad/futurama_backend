@@ -45,10 +45,7 @@ export class PasswordResetService {
         .getOne();
 
       if (!user) {
-        throw new HttpException(
-          `User with email ${email} was not found`,
-          HttpStatus.NOT_FOUND,
-        );
+        throw new HttpException(`User was not found`, HttpStatus.NOT_FOUND);
       } else {
         return user;
       }

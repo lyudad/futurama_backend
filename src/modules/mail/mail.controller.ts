@@ -11,11 +11,11 @@ export class MailController {
   @ApiOperation({ summary: 'Sending email' })
   @ApiResponse({ status: 201, type: UserDTO })
   @Post('send')
-  async sendEmail(@Body() body: UserDTO): Promise<UserDTO> {
+  async sendEmail(@Body() body: UserDTO): Promise<void> {
     try {
       await this.mailService.send(body.email);
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 }

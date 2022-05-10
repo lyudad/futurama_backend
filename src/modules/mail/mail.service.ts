@@ -34,7 +34,7 @@ export class MailService {
     }
   }
 
-  async send(email: string): Promise<UserEntity> {
+  async send(email: string): Promise<void> {
     try {
       await this.findByEmail(email);
 
@@ -50,6 +50,7 @@ export class MailService {
         text: 'Please follow the link to change your password. If you have not initiated a password change, ignore this message.',
         html: `<h1>Please follow the <a href=${process.env.FRONTEND_BASE_URL}/password/make_new?email=${cipherEmail}">LINK</a> to change your password. If you have not initiated a password change, ignore this message.</h1>`,
       });
+
       throw new HttpException('Done', HttpStatus.OK);
     } catch (error) {
       throw error;

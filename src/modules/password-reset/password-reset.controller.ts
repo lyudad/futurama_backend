@@ -14,12 +14,12 @@ export class PasswordResetController {
   async getUserByEmail(
     @Body() UserDTO: UserDTO,
     @Query('email') email: string,
-  ): Promise<UserDTO> {
+  ): Promise<void> {
     try {
       const user = await this.passwordResetService.findByEmail(email);
       await this.passwordResetService.changePassword(user.id, UserDTO);
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 
@@ -31,7 +31,7 @@ export class PasswordResetController {
       const users = await this.passwordResetService.getAllUsers();
       return users;
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 }
