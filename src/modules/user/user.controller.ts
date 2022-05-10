@@ -1,17 +1,16 @@
 import {
   Body,
   Controller,
-  Get,
   Post,
-  Req,
-  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { UserDTO } from './dto/user.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { UserDTO } from './dto/user.login';
+import { User } from './dto/user.register';
 import { UserService } from './user.service';
 
+@ApiTags('Auth')
 @Controller('/user')
 export class UserController {
   appService: any;
@@ -21,15 +20,9 @@ export class UserController {
   login(@Body() data: UserDTO) {
     return this.userService.login(data);
   }
-  @Get('/auth/google')
-  @UseGuards(AuthGuard('google'))
-  async googleAuth(@Req() req) {
-    return req;
-  }
-
-  @Get('/auth/google/callback')
-  @UseGuards(AuthGuard('google'))
-  googleAuthRedirect(@Req() req) {
-    return this.appService.googleLogin(req);
+  @Post('/register')
+  @UsePipes(new ValidationPipe())
+  register(@Body() data: User) {
+    return this.userService.register(data);
   }
 }
