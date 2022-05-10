@@ -4,8 +4,6 @@ import { PasswordResetController } from './password-reset.controller';
 import { UserEntity } from '../user/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-
-
 @Module({
   providers: [PasswordResetService],
   controllers: [PasswordResetController],

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { PasswordResetService } from './password-reset.service';
 import { UserEntity } from '../user/user.entity';
-import { UserDTO } from '../user/dto/user.dto';
+import { UserDTO } from '../user/dto/user.login';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Password-reset')
