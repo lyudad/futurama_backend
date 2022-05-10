@@ -8,6 +8,5 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   providers: [PasswordResetService],
   controllers: [PasswordResetController],
   imports: [TypeOrmModule.forFeature([UserEntity])],
-
 })
 export class PasswordResetModule {}
