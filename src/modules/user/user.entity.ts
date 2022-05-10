@@ -19,14 +19,21 @@ export class UserEntity {
   @Column('text')
   password: string;
 
+  @Column({
+    type: 'enum',
+    enum: ['freelancer', 'jobOwner'],
+    nullable: true,
+  })
+  role: string;
+
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
   toResponceObject(showToken = true) {
-    const { id, firstName, lastName, email, token } = this;
-    const responceObject = { user: { id, firstName, lastName, email }, token };
+    const { firstName, lastName, email, token } = this;
+    const responceObject = { user: { firstName, lastName, email }, token };
     if (showToken) {
       responceObject.token = token;
     }

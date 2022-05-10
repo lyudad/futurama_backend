@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../user/user.entity';
 import { Repository } from 'typeorm';
-import { UserDTO } from '../user/dto/user.dto';
+import { UserDTO } from '../user/dto/user.login';
 import * as bcrypt from 'bcrypt';
 import * as Crypto from 'crypto-js';
 
