@@ -1,18 +1,12 @@
 import { Controller, Get, Body, Query, Patch } from '@nestjs/common';
 import { PasswordResetService } from './password-reset.service';
-import { MailService } from '../mail/mail.service';
-
-import { UserEntity } from '../user/user.entity';
 import { UserDTO } from '../user/dto/user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Password-reset')
 @Controller('password')
 export class PasswordResetController {
-  constructor(
-    private readonly passwordResetService: PasswordResetService,
-    private readonly mailService: MailService,
-  ) {}
+  constructor(private readonly passwordResetService: PasswordResetService) {}
 
   @ApiOperation({ summary: 'Changing password' })
   @ApiResponse({ status: 200, type: UserDTO })
@@ -20,9 +14,9 @@ export class PasswordResetController {
   async getUserByEmail(
     @Body() UserDTO: UserDTO,
     @Query('email') email: string,
-  ): Promise<UserEntity> {
+  ): Promise<UserDTO> {
     try {
-      const user = await this.mailService.findByEmail(email);
+      const user = await this.passwordResetService.findByEmail(email);
       await this.passwordResetService.changePassword(user.id, UserDTO);
     } catch (error) {
       return error;
@@ -30,9 +24,9 @@ export class PasswordResetController {
   }
 
   @ApiOperation({ summary: 'Getting all users' })
-  @ApiResponse({ status: 200, type: UserEntity })
+  @ApiResponse({ status: 200, type: UserDTO })
   @Get()
-  async allUser(): Promise<UserEntity[]> {
+  async allUser(): Promise<UserDTO[]> {
     try {
       const users = await this.passwordResetService.getAllUsers();
       return users;

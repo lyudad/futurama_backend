@@ -4,16 +4,14 @@ import { UserEntity } from '../user/user.entity';
 import { Repository } from 'typeorm';
 import * as SendGrid from '@sendgrid/mail';
 import * as Crypto from 'crypto-js';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MailService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
-    private readonly configService: ConfigService,
   ) {
-    SendGrid.setApiKey(this.configService.get<string>('SENDGRID_API_KEY'));
+    SendGrid.setApiKey(process.env.SENDGRID_API_KEY);
   }
 
   async findByEmail(email: string): Promise<UserEntity> {
@@ -42,13 +40,13 @@ export class MailService {
 
       const cipherEmail = Crypto.AES.encrypt(
         email,
-        this.configService.get<string>('DECRYPT_KEY'),
+        process.env.DECRYPT_KEY,
       ).toString();
 
       await SendGrid.send({
         to: email,
         subject: 'Futurama password reset link',
-        from: this.configService.get<string>('SENDGRID_DOMAIN'),
+        from: process.env.SENDGRID_DOMAIN,
         text: 'Please follow the link to change your password. If you have not initiated a password change, ignore this message.',
         html: `<h1>Please follow the <a href=${process.env.FRONTEND_BASE_URL}/password/make_new?email=${cipherEmail}">LINK</a> to change your password. If you have not initiated a password change, ignore this message.</h1>`,
       });

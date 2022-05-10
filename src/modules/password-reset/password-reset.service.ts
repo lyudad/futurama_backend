@@ -4,6 +4,7 @@ import { UserEntity } from '../user/user.entity';
 import { Repository } from 'typeorm';
 import { UserDTO } from '../user/dto/user.dto';
 import * as bcrypt from 'bcrypt';
+import * as Crypto from 'crypto-js';
 
 @Injectable()
 export class PasswordResetService {
@@ -21,6 +22,31 @@ export class PasswordResetService {
       if (!user) {
         throw new HttpException(
           `User with id ${id} was not found`,
+          HttpStatus.NOT_FOUND,
+        );
+      } else {
+        return user;
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findByEmail(email: string): Promise<UserEntity> {
+    try {
+      const originalEmail = Crypto.AES.decrypt(
+        email,
+        process.env.DECRYPT_KEY,
+      ).toString(Crypto.enc.Utf8);
+
+      const user = await this.userRepository
+        .createQueryBuilder()
+        .where('email = :originalEmail', { originalEmail })
+        .getOne();
+
+      if (!user) {
+        throw new HttpException(
+          `User with email ${email} was not found`,
           HttpStatus.NOT_FOUND,
         );
       } else {
