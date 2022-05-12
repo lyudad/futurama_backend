@@ -9,7 +9,7 @@ import * as Crypto from 'crypto-js';
 export class MailService {
   constructor(
     @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    private readonly userRepository: Repository<UserEntity>,
   ) {
     SendGrid.setApiKey(process.env.SENDGRID_API_KEY);
   }

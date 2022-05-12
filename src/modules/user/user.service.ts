@@ -26,8 +26,10 @@ export class UserService {
   }
 
   async register(data: User) {
-    let user = await this.userRepository.findOne({ where: { email: data.email } });
-    if(user){
+    let user = await this.userRepository.findOne({
+      where: { email: data.email },
+    });
+    if (user) {
       throw new HttpException(
         'User with this email is exsist!',
         HttpStatus.BAD_REQUEST,
