@@ -1,12 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../user.entity';
-import { FilesController } from './upload.controller';
+
+import { ContactsController } from './contacts.controller';
+import { ContactsService } from './contacts.service';
+
 
 @Module({
-  providers: [],
-  controllers: [FilesController],
+  providers: [ContactsService],
+  controllers: [ContactsController],
   imports: [TypeOrmModule.forFeature([UserEntity])],
   exports: [TypeOrmModule]
 })
-export class UploadModule { }
+export class ContactsModule { }

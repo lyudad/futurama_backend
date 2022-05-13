@@ -2,7 +2,7 @@ import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 
-@Entity('user')
+@Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -17,6 +17,20 @@ export class UserEntity {
   email: string;
 
   @Column('text')
+  phone: number;
+
+  @Column('text')
+  photo: string;
+
+
+  @Column({
+    type: 'enum',
+    enum: ['freelancer', 'jobOwner'],
+    nullable: true,
+  })
+  role: string;
+
+  @Column('text')
   password: string;
 
   @BeforeInsert()
@@ -25,8 +39,8 @@ export class UserEntity {
   }
 
   toResponceObject(showToken = true) {
-    const { id, firstName, lastName, email, token } = this;
-    const responceObject = { user: { id, firstName, lastName, email }, token };
+    const { firstName, lastName, email, token } = this;
+    const responceObject = { user: { firstName, lastName, email }, token };
     if (showToken) {
       responceObject.token = token;
     }

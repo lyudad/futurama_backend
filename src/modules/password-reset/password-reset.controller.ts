@@ -1,14 +1,7 @@
-import {
-  Controller,
-  Post,
-  Get,
-  Body,
-  Query,
-  NotFoundException,
-} from '@nestjs/common';
+import { Controller, Get, Body, Query, Patch } from '@nestjs/common';
 import { PasswordResetService } from './password-reset.service';
 import { UserEntity } from '../user/user.entity';
-import { UserDTO } from '../user/dto/user.dto';
+import { UserDTO } from '../user/dto/user.login';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Password-reset')
@@ -18,35 +11,28 @@ export class PasswordResetController {
 
   @ApiOperation({ summary: 'Changing password' })
   @ApiResponse({ status: 200, type: UserDTO })
-  @Post('reset')
+  @Patch('reset')
   async getUserByEmail(
     @Body() UserDTO: UserDTO,
-    @Query('email') email: UserDTO,
-  ): Promise<UserEntity> {
-    const user = await this.passwordResetService.findByEmail(email);
-    if (!user) {
-      throw new NotFoundException(`User with email ${email} was not found`);
-    } else {
-      const newUser = await this.passwordResetService.changePassword(
-        user.id,
-        UserDTO,
-      );
-      return newUser;
+    @Query('email') email: string,
+  ): Promise<void> {
+    try {
+      const user = await this.passwordResetService.findByEmail(email);
+      await this.passwordResetService.changePassword(user.id, UserDTO);
+    } catch (error) {
+      throw error;
     }
   }
 
   @ApiOperation({ summary: 'Getting all users' })
-  @ApiResponse({ status: 200, type: UserEntity })
+  @ApiResponse({ status: 200, type: UserDTO })
   @Get()
-  async allUser(): Promise<UserEntity[]> {
-    const users = await this.passwordResetService.getAllUsers();
-    return users;
-  }
-
-  @ApiOperation({ summary: 'User creation' })
-  @ApiResponse({ status: 200, type: UserEntity })
-  @Post()
-  async createUser(@Body() ExampleUser: UserEntity) {
-    return this.passwordResetService.createUser(ExampleUser);
+  async allUser(): Promise<UserDTO[]> {
+    try {
+      const users = await this.passwordResetService.getAllUsers();
+      return users;
+    } catch (error) {
+      throw error;
+    }
   }
 }
