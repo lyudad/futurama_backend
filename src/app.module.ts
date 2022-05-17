@@ -5,6 +5,7 @@ import { UserModule } from './modules/user/user.module';
 import { UserEntity } from './modules/user/user.entity';
 import { PasswordResetModule } from './modules/password-reset/password-reset.module';
 import { MailModule } from './modules/mail/mail.module';
+import { ProfileModule } from './modules/profile/profile.module';
 
 @Module({
   controllers: [],
@@ -30,6 +31,8 @@ import { MailModule } from './modules/mail/mail.module';
     PasswordResetModule,
 
     MailModule,
+
+    ProfileModule,
   ],
 })
 export class AppModule {}

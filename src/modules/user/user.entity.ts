@@ -1,6 +1,7 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
+import { ProfileEntity } from '../profile/entities/profile.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -25,6 +26,10 @@ export class UserEntity {
     nullable: true,
   })
   role: string;
+
+  @OneToOne(() => ProfileEntity, profile => profile.user)
+  @JoinColumn()
+  profile: ProfileEntity;
 
   @BeforeInsert()
   async hashPassword() {
