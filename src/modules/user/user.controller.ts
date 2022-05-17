@@ -15,6 +15,7 @@ import { UserService } from './user.service';
 export class UserController {
   appService: any;
   constructor(private userService: UserService) {}
+  
   @Post('/login')
   @UsePipes(new ValidationPipe())
   login(@Body() data: UserDTO) {

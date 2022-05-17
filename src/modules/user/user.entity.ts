@@ -17,11 +17,10 @@ export class UserEntity {
   email: string;
 
   @Column('text')
-  phone: number;
+  phone: string;
 
   @Column('text')
   photo: string;
-
 
   @Column({
     type: 'enum',

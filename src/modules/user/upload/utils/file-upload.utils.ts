@@ -1,4 +1,3 @@
-import { extname } from 'path';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 export const imageFileFilter = (req, file, callback) => {
@@ -14,11 +13,10 @@ export const imageFileFilter = (req, file, callback) => {
   callback(null, true);
 };
 export const editFileName = (req, file, callback) => {
-  const name = file.originalname.split('.')[0];
-  const fileExtName = extname(file.originalname);
+  const name = file.originalname.split('.')[0];  
   const randomName = Array(4)
     .fill(null)
     .map(() => Math.round(Math.random() * 10).toString(10))
     .join('');
-  callback(null, `${name}${randomName}${fileExtName}`);
+  callback(null, `${name}${randomName}`);
 };

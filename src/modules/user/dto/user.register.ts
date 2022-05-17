@@ -11,7 +11,7 @@ export class User {
   @IsEmail()
   email: string;
 
-  phone: number;
+  phone: string;
 
   photo: string;
 

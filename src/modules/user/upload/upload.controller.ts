@@ -1,10 +1,13 @@
-import { Controller, Get, Post, UseInterceptors, UploadedFile, Res, Param, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, UseInterceptors, UploadedFile, Res, Param, HttpStatus, Req } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Response, Request } from 'express';
 import { diskStorage } from 'multer';
 import { Repository } from 'typeorm';
+
 import { UserEntity } from '../user.entity';
 import { editFileName, imageFileFilter } from './utils/file-upload.utils';
+import { ContactsService } from '../contact-info/contacts.service';
 
 
 @Controller('upload')
@@ -14,7 +17,7 @@ export class FilesController {
     private usersRepository: Repository<UserEntity>,
   ) { }
 
-  @Post(':id')
+  @Post()
   @UseInterceptors(
     FileInterceptor('photo', {
       storage: diskStorage({
@@ -23,12 +26,11 @@ export class FilesController {
       }),
       fileFilter: imageFileFilter,
     }),
-  )
+  )  
 
-  async uploadedFile(@UploadedFile() file, @Param('id') id: string) {
-    const photoUrl = 'https://futurama.cf/upload/' + file.filename;
-
-    await this.usersRepository.update(id, { photo: photoUrl });
+  async uploadedFile(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
+    const photoUrl = process.env.URL + file.filename;    
+    await this.usersRepository.update(ContactsService.extractId(req), { photo: photoUrl });
     
     return {
       status: HttpStatus.OK,
@@ -39,7 +41,7 @@ export class FilesController {
 
 
   @Get(':imagename')
-  getImage(@Param('imagename') image, @Res() res) {
+  getImage(@Param('imagename') image: string, @Res() res: Response) {
     const response = res.sendFile(image, { root: './uploads' });
     return {
       status: HttpStatus.OK,
@@ -47,17 +49,3 @@ export class FilesController {
     };
   }
 }
-
- // @Post()
-  // create(
-  //   @Body() body: {
-  //     firstname: string;
-  //     lastname: string;
-  //     email: string;
-  //     phone: string;
-  //     token: string;
-  //     photo: any;
-  //   },
-  // ) {
-  //   return body.firstname + 'https://futurama.cf/upload/';
-  // }
