@@ -6,7 +6,7 @@ export class SkillsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   skill: string;
 
   @ManyToMany(() => ProfileEntity, profile => profile.skills)

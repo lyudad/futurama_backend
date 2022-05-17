@@ -10,16 +10,10 @@ export class ProfileEntity {
   id: number;
 
   @Column()
-  profilePhoto: string;
-
-  @Column()
   englishLevel: string;
 
   @Column()
   position: string;
-
-  @Column()
-  phoneNumber: string;
 
   @Column()
   desirebleSalaryLevel: number;

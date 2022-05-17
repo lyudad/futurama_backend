@@ -20,6 +20,12 @@ export class UserEntity {
   @Column('text')
   password: string;
 
+  @Column('text')
+  phone: string;
+
+  @Column('text')
+  photo: string;
+
   @Column({
     type: 'enum',
     enum: ['freelancer', 'jobOwner'],
@@ -37,8 +43,8 @@ export class UserEntity {
   }
 
   toResponceObject(showToken = true) {
-    const { firstName, lastName, email, token } = this;
-    const responceObject = { user: { firstName, lastName, email }, token };
+    const { firstName, lastName, email, token, phone, photo } = this;
+    const responceObject = { user: { firstName, lastName, email, phone, photo }, token };
     if (showToken) {
       responceObject.token = token;
     }
