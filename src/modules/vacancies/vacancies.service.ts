@@ -26,19 +26,17 @@ export class VacanciesService {
 
   async createVacancy(Vacancy: VacanciesDTO): Promise<VacanciesEntity> {
     try {
-      await this.vacanciesRepository
-        .createQueryBuilder()
-        .insert()
-        .values(Vacancy)
-        .execute();
-
+      await this.vacanciesRepository.save({
+        ...Vacancy,
+        skills: Vacancy.skills.map((skill: number) => ({ id: skill })),
+      });
       throw new HttpException('Done', HttpStatus.OK);
     } catch (error) {
       throw error;
     }
   }
 
-  async deleteVacancy(id: VacanciesDTO): Promise<VacanciesEntity> {
+  async deleteVacancy(id: number): Promise<VacanciesEntity> {
     try {
       const vacancy = await this.vacanciesRepository
         .createQueryBuilder()
@@ -62,7 +60,8 @@ export class VacanciesService {
       const vacancies = await this.vacanciesRepository
         .createQueryBuilder('vacancy')
         .leftJoinAndSelect('vacancy.category', 'category')
-        .orderBy('vacancy.id')
+        .leftJoinAndSelect('vacancy.skills', 'skills')
+        .orderBy('vacancy.createdAt', 'DESC')
         .getMany();
       if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
       return vacancies;
@@ -85,7 +84,7 @@ export class VacanciesService {
     }
   }
 
-  async deleteSkill(id: SkillsDTO): Promise<SkillsEntity> {
+  async deleteSkill(id: number): Promise<SkillsEntity> {
     try {
       const skill = await this.skillsRepository
         .createQueryBuilder()
@@ -131,7 +130,7 @@ export class VacanciesService {
     }
   }
 
-  async deleteCategory(id: CategoriesDTO): Promise<CategoriesEntity> {
+  async deleteCategory(id: number): Promise<CategoriesEntity> {
     try {
       const category = await this.categoriesRepository
         .createQueryBuilder()

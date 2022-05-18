@@ -7,13 +7,13 @@ export class VacanciesDTO {
   @IsNotEmpty()
   id: number;
 
-  @ApiProperty({ example: '1', description: 'category_id' })
+  @ApiProperty({ example: 'Development', description: 'category_id' })
   @IsNotEmpty()
   categoryId: CategoriesEntity;
 
-  // @ApiProperty({ example: 'JS', description: 'category' })
-  // @IsNotEmpty()
-  // category: CategoriesEntity;
+  @ApiProperty({ example: 'JS, Nestjs', description: 'skills' })
+  @IsNotEmpty()
+  skills: [];
 
   @ApiProperty({ example: '1', description: 'owner_id' })
   @IsNotEmpty()
