@@ -1,13 +1,13 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
-@Entity('skills')
-export class SkillsEntity {
+@Entity('categories')
+export class CategoriesEntity {
   @ApiProperty({ example: '1', description: 'id' })
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ApiProperty({ example: 'JS', description: 'skill' })
+  @ApiProperty({ example: 'development', description: 'category' })
   @Column({ unique: true })
-  skill: string;
+  category: string;
 }

@@ -27,7 +27,7 @@ export class UserService {
 
   async register(data: User): Promise<object>{
     let user = await this.userRepository.findOne({ where: { email: data.email } });
-    if(user){
+    if (user) {
       throw new HttpException(
         'User with this email is exsist!',
         HttpStatus.BAD_REQUEST,

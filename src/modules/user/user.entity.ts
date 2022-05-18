@@ -3,7 +3,7 @@ import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { ProfileEntity } from '../profile/entities/profile.entity';
 
-@Entity('user')
+@Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,9 +16,6 @@ export class UserEntity {
 
   @Column('text')
   email: string;
-
-  @Column('text')
-  password: string;
 
   @Column({type: 'text', nullable: true})
   phone: string;
@@ -36,6 +33,9 @@ export class UserEntity {
   @OneToOne(() => ProfileEntity, profile => profile.user)
   @JoinColumn()
   profile: ProfileEntity;
+
+  @Column('text')
+  password: string;
 
   @BeforeInsert()
   async hashPassword(): Promise<void> {

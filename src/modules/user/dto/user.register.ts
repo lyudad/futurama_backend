@@ -11,6 +11,10 @@ export class User {
   @IsEmail()
   email: string;
 
+  phone: string;
+
+  photo: string;
+
   @IsNotEmpty()
   password: string;
 

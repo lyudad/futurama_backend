@@ -1,13 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-@Entity('skills')
-export class SkillsEntity {
+export class SkillsDTO {
   @ApiProperty({ example: '1', description: 'id' })
-  @PrimaryGeneratedColumn()
+  @IsNotEmpty()
   id: number;
 
   @ApiProperty({ example: 'JS', description: 'skill' })
-  @Column({ unique: true })
+  @IsNotEmpty()
   skill: string;
 }
