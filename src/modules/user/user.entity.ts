@@ -2,7 +2,7 @@ import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 
-@Entity('user')
+@Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -17,7 +17,10 @@ export class UserEntity {
   email: string;
 
   @Column('text')
-  password: string;
+  phone: string;
+
+  @Column('text')
+  photo: string;
 
   @Column({
     type: 'enum',
@@ -25,6 +28,9 @@ export class UserEntity {
     nullable: true,
   })
   role: string;
+
+  @Column('text')
+  password: string;
 
   @BeforeInsert()
   async hashPassword() {
