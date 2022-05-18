@@ -26,26 +26,27 @@ export class FilesController {
       }),
       fileFilter: imageFileFilter,
     }),
-  )  
+  )
 
   async uploadedFile(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
-    const photoUrl = process.env.URL + file.filename;    
-    await this.usersRepository.update(ContactsService.extractId(req), { photo: photoUrl });
-    
-    return {
-      status: HttpStatus.OK,
-      message: 'Image uploaded successfully!',
-      photoUrl,
-    };
-  }
+    const photoUrl = process.env.URL + file.filename;
+    try {
+      await this.usersRepository.update(ContactsService.extractId(req), { photo: photoUrl });
+      return {
+        photoUrl,
+      };
+    } catch { throw new Error() }
 
+  }
 
   @Get(':imagename')
   getImage(@Param('imagename') image: string, @Res() res: Response) {
-    const response = res.sendFile(image, { root: './uploads' });
-    return {
-      status: HttpStatus.OK,
-      data: response,
-    };
+    try {
+      const response = res.sendFile(image, { root: './uploads' });
+      return {
+        status: HttpStatus.OK,
+        data: response,
+      };
+    } catch { throw new Error() }
   }
 }

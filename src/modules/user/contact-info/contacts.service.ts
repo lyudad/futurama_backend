@@ -18,14 +18,23 @@ export class ContactsService {
   ) { }
 
   find(): Promise<UserEntity[]> {
-    return this.usersRepository.find();
+    try {
+      return this.usersRepository.find();
+    }
+    catch { throw new Error() }
   }
 
   async findOne(@Req() req: Request): Promise<UserEntity> {
-    return this.usersRepository.findOne(ContactsService.extractId(req));
+    try {
+      return this.usersRepository.findOne(ContactsService.extractId(req));
+    }
+    catch { throw new Error() }
   }
 
   async update(@Req() req: Request, data: ContactsDTO): Promise<void> {
-    await this.usersRepository.update(ContactsService.extractId(req), data);
+    try {
+      await this.usersRepository.update(ContactsService.extractId(req), data);
+    }
+    catch { throw new Error() }
   }
 }
