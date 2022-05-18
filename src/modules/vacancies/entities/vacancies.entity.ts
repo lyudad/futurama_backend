@@ -31,10 +31,6 @@ export class VacanciesEntity {
   @Column()
   ownerId: number;
 
-  // @ApiProperty({ example: '1', description: 'owner_id' })
-  // @ManyToOne(() => UserEntity)
-  // owner: UserEntity
-
   @ApiProperty({ example: 'Junior js developer', description: 'title' })
   @Column()
   title: string;
