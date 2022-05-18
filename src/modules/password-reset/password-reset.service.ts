@@ -10,7 +10,7 @@ import * as Crypto from 'crypto-js';
 export class PasswordResetService {
   constructor(
     @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    private readonly userRepository: Repository<UserEntity>,
   ) {}
 
   async findById(id: number): Promise<UserEntity> {
