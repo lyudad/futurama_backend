@@ -6,7 +6,8 @@ import { ProfileService } from './profile.service';
 export class ProfileController {
     constructor(private profileService: ProfileService) {}
     @Get('')
-    getMyProfile(@Headers() headers: any) {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any    
+    getMyProfile(@Headers() headers: any): Promise<object>{        
         if(!headers.token){
             throw new HttpException(
                 'Unauthorized',

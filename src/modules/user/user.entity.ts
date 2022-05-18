@@ -20,10 +20,10 @@ export class UserEntity {
   @Column('text')
   password: string;
 
-  @Column('text')
+  @Column({type: 'text', nullable: true})
   phone: string;
 
-  @Column('text')
+  @Column({type: 'text', nullable: true})
   photo: string;
 
   @Column({
@@ -38,11 +38,11 @@ export class UserEntity {
   profile: ProfileEntity;
 
   @BeforeInsert()
-  async hashPassword() {
+  async hashPassword(): Promise<void> {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
-  toResponceObject(showToken = true) {
+  toResponceObject(showToken = true): object {
     const { firstName, lastName, email, token, phone, photo } = this;
     const responceObject = { user: { firstName, lastName, email, phone, photo }, token };
     if (showToken) {
@@ -51,11 +51,11 @@ export class UserEntity {
     return responceObject;
   }
 
-  async comparePassword(attempt: string) {
+  async comparePassword(attempt: string): Promise<boolean> {
     return await bcrypt.compare(attempt, this.password);
   }
 
-  private get token() {
+  private get token(): string {
     const { id, email } = this;
     return jwt.sign(
       {

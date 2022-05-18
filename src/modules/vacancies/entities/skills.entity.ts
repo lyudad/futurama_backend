@@ -1,5 +1,4 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { ProfileEntity } from '../../profile/entities/profile.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('skills')
 export class SkillsEntity {
@@ -8,7 +7,4 @@ export class SkillsEntity {
 
   @Column({ unique: true, nullable: true })
   skill: string;
-
-  @ManyToMany(() => ProfileEntity, profile => profile.skills)
-  prfiles: ProfileEntity[];
 }

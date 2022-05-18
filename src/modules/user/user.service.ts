@@ -12,7 +12,7 @@ export class UserService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
-  async login(data: UserDTO) {
+  async login(data: UserDTO): Promise<object>{
     const { email, password } = data;
     const user = await this.userRepository.findOne({ where: { email } });
 
@@ -25,7 +25,7 @@ export class UserService {
     return user.toResponceObject();
   }
 
-  async register(data: User) {
+  async register(data: User): Promise<object>{
     let user = await this.userRepository.findOne({ where: { email: data.email } });
     if(user){
       throw new HttpException(

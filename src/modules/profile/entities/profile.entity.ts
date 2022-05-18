@@ -31,7 +31,7 @@ export class ProfileEntity {
   @JoinColumn()
   user: UserEntity;
   
-  @ManyToMany(() => SkillsEntity, skills => skills.prfiles)
+  @ManyToMany(() => SkillsEntity)
   @JoinTable()
   skills: SkillsEntity[];
 
