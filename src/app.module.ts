@@ -8,8 +8,7 @@ import { MailModule } from './modules/mail/mail.module';
 import { UploadModule } from './modules/user/upload/upload.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { ContactsModule } from './modules/user/contact-info/contacts.module';
-
-
+import { VacanciesModule } from './modules/vacancies/vacancies.module';
 
 
 @Module({
@@ -37,12 +36,14 @@ import { ContactsModule } from './modules/user/contact-info/contacts.module';
 
     MailModule,
 
+
     MulterModule.register({
       dest: './uploads',
     }),
 
     UploadModule,
-    ContactsModule
+    ContactsModule,
+    VacanciesModule,
   ],
 })
 export class AppModule { }
