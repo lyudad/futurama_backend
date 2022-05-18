@@ -4,6 +4,7 @@ import { SkillsDTO } from './dto/skills.dto';
 import { CategoriesDTO } from './dto/categories.dto';
 import { VacanciesDTO } from './dto/vacancies.dto';
 import { VacanciesService } from './vacancies.service';
+import { VacanciesEntity } from './entities/vacancies.entity';
 
 @ApiTags('Create vacancies')
 @Controller('search_work')
@@ -24,7 +25,7 @@ export class VacanciesController {
   @ApiOperation({ summary: 'Delete vacancy' })
   @ApiResponse({ status: 200, type: VacanciesDTO })
   @Delete('vacancies')
-  async deleteVacancy(@Body() body: any): Promise<void> {
+  async deleteVacancy(@Body() body: VacanciesDTO): Promise<void> {
     try {
       await this.vacanciesService.deleteVacancy(body.id);
     } catch (error) {
@@ -35,7 +36,7 @@ export class VacanciesController {
   @ApiOperation({ summary: 'Getting all vacancies' })
   @ApiResponse({ status: 200, type: VacanciesDTO })
   @Get('vacancies')
-  async getAllVacancies(): Promise<any[]> {
+  async getAllVacancies(): Promise<VacanciesEntity[]> {
     try {
       const vacancies = await this.vacanciesService.getAllVacancies();
       return vacancies;
@@ -58,7 +59,7 @@ export class VacanciesController {
   @ApiOperation({ summary: 'Delete skill' })
   @ApiResponse({ status: 200, type: SkillsDTO })
   @Delete('skills')
-  async deleteSkill(@Body() body: any): Promise<void> {
+  async deleteSkill(@Body() body: SkillsDTO): Promise<void> {
     try {
       await this.vacanciesService.deleteSkill(body.id);
     } catch (error) {
@@ -92,7 +93,7 @@ export class VacanciesController {
   @ApiOperation({ summary: 'Delete category' })
   @ApiResponse({ status: 200, type: CategoriesDTO })
   @Delete('categories')
-  async deleteCategory(@Body() body: any): Promise<void> {
+  async deleteCategory(@Body() body: CategoriesDTO): Promise<void> {
     try {
       await this.vacanciesService.deleteCategory(body.id);
     } catch (error) {

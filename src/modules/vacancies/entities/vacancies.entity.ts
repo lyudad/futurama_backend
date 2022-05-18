@@ -20,15 +20,11 @@ export class VacanciesEntity {
   id: number;
 
   @ApiProperty({ example: '1', description: 'category_id' })
-  @ManyToOne(() => CategoriesEntity, category => category.category)
+  @ManyToOne(() => CategoriesEntity)
   category: CategoriesEntity;
 
-  // @ManyToMany(() => SkillsEntity)
-  // @JoinTable()
-  // skills: SkillsEntity[]
-
-  @ManyToMany(() => SkillsEntity, skills => skills.skill, { cascade: true })
-  @JoinTable()
+  @ManyToMany(() => SkillsEntity)
+  @JoinTable({ name: 'vacancies_skills' })
   skills: SkillsEntity[];
 
   @ApiProperty({ example: '1', description: 'owner_id' })
@@ -36,7 +32,7 @@ export class VacanciesEntity {
   ownerId: number;
 
   // @ApiProperty({ example: '1', description: 'owner_id' })
-  // @ManyToOne(() => UserEntity, (owner) => owner.id)
+  // @ManyToOne(() => UserEntity)
   // owner: UserEntity
 
   @ApiProperty({ example: 'Junior js developer', description: 'title' })
