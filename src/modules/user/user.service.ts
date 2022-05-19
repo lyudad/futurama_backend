@@ -12,7 +12,7 @@ export class UserService {
     private userRepository: Repository<UserEntity>,
   ) {}
 
-  async login(data: UserDTO) {
+  async login(data: UserDTO): Promise<object>{
     const { email, password } = data;
     const user = await this.userRepository.findOne({ where: { email } });
 
@@ -25,17 +25,15 @@ export class UserService {
     return user.toResponceObject();
   }
 
-  async register(data: User) {
-    let user = await this.userRepository.findOne({
-      where: { email: data.email },
-    });
+  async register(data: User): Promise<object>{
+    let user = await this.userRepository.findOne({ where: { email: data.email } });
     if (user) {
       throw new HttpException(
         'User with this email is exsist!',
         HttpStatus.BAD_REQUEST,
       );
     }
-    user = this.userRepository.create({...data, phone: '', photo: ''});
+    user = this.userRepository.create(data);
     return this.userRepository.save(user);
   }
 }
