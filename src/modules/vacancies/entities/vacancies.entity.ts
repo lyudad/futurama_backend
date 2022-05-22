@@ -48,18 +48,18 @@ export class VacanciesEntity {
   location: string;
 
   @ApiProperty({ example: 'Very good project', description: 'description' })
-  @Column()
+  @Column("varchar", { length: 500 })
   description: string;
 
-  @ApiProperty({ example: 'Entermediate', description: 'english level' })
+  @ApiProperty({ example: 'Intermediate', description: 'english level' })
   @Column({
     type: 'enum',
     enum: [
-      'elementary',
-      'pre-intermediate',
-      'intermediate',
-      'upper-intermediate',
-      'advanced',
+      'Elementary',
+      'Pre-intermediate',
+      'Intermediate',
+      'Upper-intermediate',
+      'Advanced',
     ],
   })
   englishLevel: string;
