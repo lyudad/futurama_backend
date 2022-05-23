@@ -22,7 +22,7 @@ export class VacanciesService {
     private readonly categoriesRepository: Repository<CategoriesEntity>,
     @InjectRepository(VacanciesEntity)
     private readonly vacanciesRepository: Repository<VacanciesEntity>,
-  ) {}
+  ) { }
 
   async createVacancy(Vacancy: VacanciesDTO): Promise<VacanciesEntity> {
     try {
@@ -65,6 +65,19 @@ export class VacanciesService {
         .getMany();
       if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
       return vacancies;
+    } catch (error) {
+      throw new ConflictException(error.sqlMessage);
+    }
+  }
+
+  async getVacancyById(id: number): Promise<VacanciesEntity> {
+    try {
+      const vacancy = await this.vacanciesRepository
+        .createQueryBuilder('vacancy')
+        .where('id = :id', { id })
+        .getOne()
+      if (!vacancy) throw new HttpException('400', HttpStatus.BAD_REQUEST);
+      return vacancy;
     } catch (error) {
       throw new ConflictException(error.sqlMessage);
     }

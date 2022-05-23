@@ -1,6 +1,7 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
+import { ProfileEntity } from '../profile/entities/profile.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -16,10 +17,10 @@ export class UserEntity {
   @Column('text')
   email: string;
 
-  @Column('text')
+  @Column({type: 'text', nullable: true})
   phone: string;
 
-  @Column('text')
+  @Column({type: 'text', nullable: true})
   photo: string;
 
   @Column({
@@ -29,28 +30,32 @@ export class UserEntity {
   })
   role: string;
 
+  @OneToOne(() => ProfileEntity, profile => profile.user)
+  @JoinColumn()
+  profile: ProfileEntity;
+
   @Column('text')
   password: string;
 
   @BeforeInsert()
-  async hashPassword() {
+  async hashPassword(): Promise<void> {
     this.password = await bcrypt.hash(this.password, 10);
   }
 
-  toResponceObject(showToken = true) {
-    const { firstName, lastName, email, token } = this;
-    const responceObject = { user: { firstName, lastName, email }, token };
+  toResponceObject(showToken = true): object {
+    const { firstName, lastName, email, token, phone, photo } = this;
+    const responceObject = { user: { firstName, lastName, email, phone, photo }, token };
     if (showToken) {
       responceObject.token = token;
     }
     return responceObject;
   }
 
-  async comparePassword(attempt: string) {
+  async comparePassword(attempt: string): Promise<boolean> {
     return await bcrypt.compare(attempt, this.password);
   }
 
-  private get token() {
+  private get token(): string {
     const { id, email } = this;
     return jwt.sign(
       {

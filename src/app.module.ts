@@ -9,7 +9,7 @@ import { UploadModule } from './modules/user/upload/upload.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { ContactsModule } from './modules/user/contact-info/contacts.module';
 import { VacanciesModule } from './modules/vacancies/vacancies.module';
-
+import { ProfileModule } from './modules/profile/profile.module';
 
 @Module({
   controllers: [],
@@ -31,16 +31,12 @@ import { VacanciesModule } from './modules/vacancies/vacancies.module';
       autoLoadEntities: true,
     }),
     UserModule,
-
     PasswordResetModule,
-
     MailModule,
-
-
+    ProfileModule,
     MulterModule.register({
       dest: './uploads',
     }),
-
     UploadModule,
     ContactsModule,
     VacanciesModule,
