@@ -74,8 +74,11 @@ export class VacanciesService {
     try {
       const vacancy = await this.vacanciesRepository
         .createQueryBuilder('vacancy')
-        .where('id = :id', { id })
+        .where('vacancy.id = :id', { id })
+        .leftJoinAndSelect('vacancy.category', 'category')
+        .leftJoinAndSelect('vacancy.skills', 'skills')
         .getOne()
+       
       if (!vacancy) throw new HttpException('400', HttpStatus.BAD_REQUEST);
       return vacancy;
     } catch (error) {

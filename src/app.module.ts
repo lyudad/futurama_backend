@@ -11,6 +11,7 @@ import { ContactsModule } from './modules/user/contact-info/contacts.module';
 import { VacanciesModule } from './modules/vacancies/vacancies.module';
 import { ProfileModule } from './modules/profile/profile.module';
 
+
 @Module({
   controllers: [],
   providers: [],
@@ -33,13 +34,14 @@ import { ProfileModule } from './modules/profile/profile.module';
     UserModule,
     PasswordResetModule,
     MailModule,
-    ProfileModule,
+    ProfileModule,  
+
     MulterModule.register({
       dest: './uploads',
     }),
     UploadModule,
-    ContactsModule,
-    VacanciesModule,
+    VacanciesModule,    
+    ContactsModule
   ],
 })
 export class AppModule { }
