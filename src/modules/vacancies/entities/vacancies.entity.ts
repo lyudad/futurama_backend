@@ -12,7 +12,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { CategoriesEntity } from './categories.entity';
 import { SkillsEntity } from './skills.entity';
 import { UserEntity } from 'src/modules/user/user.entity';
-// import { UserEntity } from 'modules/user/user.entity';
 
 @Entity('vacancies')
 export class VacanciesEntity {
