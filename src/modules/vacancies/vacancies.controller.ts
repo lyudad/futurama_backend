@@ -7,7 +7,7 @@ import { VacanciesService } from './vacancies.service';
 import { VacanciesEntity } from './entities/vacancies.entity';
 
 @ApiTags('Create vacancies')
-@Controller('search-work')
+@Controller('search_work')
 export class VacanciesController {
   constructor(private readonly vacanciesService: VacanciesService) {}
 

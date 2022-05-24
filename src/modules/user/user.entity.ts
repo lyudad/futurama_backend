@@ -1,4 +1,11 @@
-import { BeforeInsert, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { ProfileEntity } from '../profile/entities/profile.entity';
@@ -17,10 +24,10 @@ export class UserEntity {
   @Column('text')
   email: string;
 
-  @Column({type: 'text', nullable: true})
+  @Column({ type: 'text', nullable: true })
   phone: string;
 
-  @Column({type: 'text', nullable: true})
+  @Column({ type: 'text', nullable: true })
   photo: string;
 
   @Column({
@@ -44,7 +51,10 @@ export class UserEntity {
 
   toResponceObject(showToken = true): object {
     const { firstName, lastName, email, token, phone, photo } = this;
-    const responceObject = { user: { firstName, lastName, email, phone, photo }, token };
+    const responceObject = {
+      user: { firstName, lastName, email, phone, photo },
+      token,
+    };
     if (showToken) {
       responceObject.token = token;
     }
@@ -60,10 +70,10 @@ export class UserEntity {
     return jwt.sign(
       {
         id,
-        email
+        email,
       },
       process.env.SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: '7d' },
     );
   }
 }
