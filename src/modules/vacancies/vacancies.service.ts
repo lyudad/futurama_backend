@@ -95,6 +95,7 @@ export class VacanciesService {
         .where('vacancy.id = :id', { id })
         .leftJoinAndSelect('vacancy.category', 'category')
         .leftJoinAndSelect('vacancy.skills', 'skills')
+        .leftJoinAndSelect('vacancy.owner', 'users')
         .getOne();
 
       if (!vacancy) throw new HttpException('400', HttpStatus.BAD_REQUEST);
