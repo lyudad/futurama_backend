@@ -22,7 +22,7 @@ export class VacanciesService {
     private readonly categoriesRepository: Repository<CategoriesEntity>,
     @InjectRepository(VacanciesEntity)
     private readonly vacanciesRepository: Repository<VacanciesEntity>,
-  ) { }
+  ) {}
 
   async createVacancy(Vacancy: VacanciesDTO): Promise<VacanciesEntity> {
     try {
@@ -61,6 +61,7 @@ export class VacanciesService {
         .createQueryBuilder('vacancy')
         .leftJoinAndSelect('vacancy.category', 'category')
         .leftJoinAndSelect('vacancy.skills', 'skills')
+        .leftJoinAndSelect('vacancy.owner', 'users')
         .orderBy('vacancy.createdAt', 'DESC')
         .getMany();
       if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
@@ -77,8 +78,8 @@ export class VacanciesService {
         .where('vacancy.id = :id', { id })
         .leftJoinAndSelect('vacancy.category', 'category')
         .leftJoinAndSelect('vacancy.skills', 'skills')
-        .getOne()
-       
+        .getOne();
+
       if (!vacancy) throw new HttpException('400', HttpStatus.BAD_REQUEST);
       return vacancy;
     } catch (error) {
