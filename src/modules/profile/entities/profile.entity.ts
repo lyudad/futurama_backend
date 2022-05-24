@@ -32,7 +32,7 @@ export class ProfileEntity {
   user: UserEntity;
   
   @ManyToMany(() => SkillsEntity)
-  @JoinTable()
+  @JoinTable({ name: 'profile_skills' })
   skills: SkillsEntity[];
 
   @OneToMany(() => EducationEntity, education => education.profile)

@@ -10,7 +10,9 @@ import { Request } from 'express';
 import { ContactsService } from './contacts.service';
 import { UserEntity } from "../user.entity";
 import { ContactsDTO } from '../dto/contactsDTO';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Contact info')
 @Controller('user/contacts')
 export class ContactsController {
     constructor(private readonly ContactsService: ContactsService) { }
