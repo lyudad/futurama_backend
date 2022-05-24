@@ -33,7 +33,7 @@ export class UserService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    user = this.userRepository.create(data);
+    user = this.userRepository.create({...data, phone: '', photo: ''});
     return this.userRepository.save(user);
   }
 }
