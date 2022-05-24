@@ -10,6 +10,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { ContactsModule } from './modules/user/contact-info/contacts.module';
 import { VacanciesModule } from './modules/vacancies/vacancies.module';
 import { ProfileModule } from './modules/profile/profile.module';
+import { ProposalsModule } from './modules/proposals/proposals.module';
 
 
 @Module({
@@ -41,6 +42,7 @@ import { ProfileModule } from './modules/profile/profile.module';
     }),
     UploadModule,
     VacanciesModule,    
+    ProposalsModule,
     ContactsModule
   ],
 })

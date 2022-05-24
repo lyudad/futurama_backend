@@ -2,15 +2,18 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { CategoriesEntity } from './categories.entity';
 import { SkillsEntity } from './skills.entity';
+import { ProposalsEntity } from '../../proposals/proposals.entity';
 // import { UserEntity } from 'modules/user/user.entity';
 
 @Entity('vacancies')
@@ -18,6 +21,10 @@ export class VacanciesEntity {
   @ApiProperty({ example: '1', description: 'id' })
   @PrimaryGeneratedColumn()
   id: number;
+
+  @OneToMany(() => ProposalsEntity, ProposalsEntity => ProposalsEntity.vacancyId )
+  @JoinColumn()
+  public proposals: ProposalsEntity[]
 
   @ApiProperty({ example: '1', description: 'category_id' })
   @ManyToOne(() => CategoriesEntity)
@@ -76,3 +83,5 @@ export class VacanciesEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 }
+
+
