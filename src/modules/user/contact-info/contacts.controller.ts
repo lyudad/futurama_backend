@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { ContactsService } from './contacts.service';
 import { UserEntity } from '../user.entity';
 import { ContactsDTO } from '../dto/contactsDTO';
 import { ApiTags } from '@nestjs/swagger';
