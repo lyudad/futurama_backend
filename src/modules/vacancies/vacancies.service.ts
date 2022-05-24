@@ -55,6 +55,23 @@ export class VacanciesService {
     }
   }
 
+  async getVacanciesByQuery(query: string): Promise<VacanciesEntity[]> {
+    try {
+      const vacancies = await this.vacanciesRepository
+        .createQueryBuilder('vacancy')
+        .where('vacancy.title like :query', { query: `%${query}%` })
+        .leftJoinAndSelect('vacancy.category', 'category')
+        .leftJoinAndSelect('vacancy.skills', 'skills')
+        .leftJoinAndSelect('vacancy.owner', 'users')
+        .orderBy('vacancy.createdAt', 'DESC')
+        .getMany();
+      if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
+      return vacancies;
+    } catch (error) {
+      throw new ConflictException(error.sqlMessage);
+    }
+  }
+
   async getAllVacancies(): Promise<VacanciesEntity[]> {
     try {
       const vacancies = await this.vacanciesRepository
@@ -67,7 +84,7 @@ export class VacanciesService {
       if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
       return vacancies;
     } catch (error) {
-      throw new ConflictException(error.sqlMessage);
+      throw error;
     }
   }
 
