@@ -9,7 +9,7 @@ import { VacanciesEntity } from './entities/vacancies.entity';
 @ApiTags('Create vacancies')
 @Controller('search_work')
 export class VacanciesController {
-  constructor(private readonly vacanciesService: VacanciesService) { }
+  constructor(private readonly vacanciesService: VacanciesService) {}
 
   @ApiOperation({ summary: 'Creating vacancy' })
   @ApiResponse({ status: 201, type: VacanciesDTO })
@@ -44,7 +44,22 @@ export class VacanciesController {
       throw error;
     }
   }
-  
+  @ApiOperation({ summary: 'Getting all vacancies' })
+  @ApiResponse({ status: 200, type: VacanciesDTO })
+  @Get('vacancies_by_query')
+  async getVacanciesByQuery(
+    @Body() body: VacanciesDTO,
+  ): Promise<VacanciesEntity[]> {
+    try {
+      const vacancies = await this.vacanciesService.getVacanciesByQuery(
+        body.title,
+      );
+      return vacancies;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   @ApiOperation({ summary: 'Getting vacancy by ID' })
   @ApiResponse({ status: 200, type: VacanciesDTO })
   @Get('vacancies/:id')

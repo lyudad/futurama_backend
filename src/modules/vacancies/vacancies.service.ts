@@ -22,7 +22,7 @@ export class VacanciesService {
     private readonly categoriesRepository: Repository<CategoriesEntity>,
     @InjectRepository(VacanciesEntity)
     private readonly vacanciesRepository: Repository<VacanciesEntity>,
-  ) { }
+  ) {}
 
   async createVacancy(Vacancy: VacanciesDTO): Promise<VacanciesEntity> {
     try {
@@ -55,18 +55,36 @@ export class VacanciesService {
     }
   }
 
-  async getAllVacancies(): Promise<VacanciesEntity[]> {
+  async getVacanciesByQuery(query: string): Promise<VacanciesEntity[]> {
     try {
       const vacancies = await this.vacanciesRepository
         .createQueryBuilder('vacancy')
+        .where('vacancy.title like :query', { query: `%${query}%` })
         .leftJoinAndSelect('vacancy.category', 'category')
         .leftJoinAndSelect('vacancy.skills', 'skills')
+        .leftJoinAndSelect('vacancy.owner', 'users')
         .orderBy('vacancy.createdAt', 'DESC')
         .getMany();
       if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
       return vacancies;
     } catch (error) {
       throw new ConflictException(error.sqlMessage);
+    }
+  }
+
+  async getAllVacancies(): Promise<VacanciesEntity[]> {
+    try {
+      const vacancies = await this.vacanciesRepository
+        .createQueryBuilder('vacancy')
+        .leftJoinAndSelect('vacancy.category', 'category')
+        .leftJoinAndSelect('vacancy.skills', 'skills')
+        .leftJoinAndSelect('vacancy.owner', 'users')
+        .orderBy('vacancy.createdAt', 'DESC')
+        .getMany();
+      if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
+      return vacancies;
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -77,8 +95,9 @@ export class VacanciesService {
         .where('vacancy.id = :id', { id })
         .leftJoinAndSelect('vacancy.category', 'category')
         .leftJoinAndSelect('vacancy.skills', 'skills')
-        .getOne()
-       
+        .leftJoinAndSelect('vacancy.owner', 'users')
+        .getOne();
+
       if (!vacancy) throw new HttpException('400', HttpStatus.BAD_REQUEST);
       return vacancy;
     } catch (error) {

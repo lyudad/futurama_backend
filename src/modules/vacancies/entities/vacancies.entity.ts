@@ -11,7 +11,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { CategoriesEntity } from './categories.entity';
 import { SkillsEntity } from './skills.entity';
-// import { UserEntity } from 'modules/user/user.entity';
+import { UserEntity } from 'src/modules/user/user.entity';
 
 @Entity('vacancies')
 export class VacanciesEntity {
@@ -28,8 +28,8 @@ export class VacanciesEntity {
   skills: SkillsEntity[];
 
   @ApiProperty({ example: '1', description: 'owner_id' })
-  @Column()
-  ownerId: number;
+  @ManyToOne(() => UserEntity)
+  owner: UserEntity;
 
   @ApiProperty({ example: 'Junior js developer', description: 'title' })
   @Column()
@@ -44,7 +44,7 @@ export class VacanciesEntity {
   location: string;
 
   @ApiProperty({ example: 'Very good project', description: 'description' })
-  @Column("varchar", { length: 500 })
+  @Column('varchar', { length: 500 })
   description: string;
 
   @ApiProperty({ example: 'Intermediate', description: 'english level' })
