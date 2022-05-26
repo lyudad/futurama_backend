@@ -31,13 +31,11 @@ export class ProposalsService {
     }
   }
   async getProposalsByVacancyId(id: number): Promise<object> {
-
-    const vacancy = await this.vacanciesRepository
-      .createQueryBuilder('vacancy')
-      .where('vacancy.id = :id', { id })
-      .leftJoinAndSelect('vacancy.proposals', 'proposals')
-      .getOne();
-
+    const vacancy = await this.proposalsRepository
+      .createQueryBuilder('proposals')
+      .where('vacancyIdId = :id', { id })
+      .leftJoinAndSelect('proposals.userId', 'users')
+      .getMany();
     return vacancy;
   }
 }

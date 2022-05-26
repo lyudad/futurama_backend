@@ -14,7 +14,7 @@ export class ProposalsEntity {
   id: number;
 
   @Column('text')
-  description: string;
+  coverLetter: string;
 
   @Column()
   price: number;
