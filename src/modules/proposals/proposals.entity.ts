@@ -9,12 +9,12 @@ import { VacanciesEntity } from '../vacancies/entities/vacancies.entity';
 
 @Entity('proposals')
 export class ProposalsEntity {
-  
+
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column("varchar", { length: 500 })
-  coverLetter: string;
+  @Column('text')
+  description: string;
 
   @Column()
   price: number;
@@ -23,5 +23,5 @@ export class ProposalsEntity {
   public userId: UserEntity;
 
   @ManyToOne(() => VacanciesEntity, VacanciesEntity => VacanciesEntity.id)
-  public vacancyId: VacanciesEntity
+  public vacancyId: VacanciesEntity;
 }

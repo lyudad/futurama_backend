@@ -35,13 +35,13 @@ import { ProposalsModule } from './modules/proposals/proposals.module';
     UserModule,
     PasswordResetModule,
     MailModule,
-    ProfileModule,  
+    ProfileModule,
 
     MulterModule.register({
       dest: './uploads',
     }),
     UploadModule,
-    VacanciesModule,    
+    VacanciesModule,
     ProposalsModule,
     ContactsModule
   ],

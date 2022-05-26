@@ -20,25 +20,24 @@ export class ContactsController {
     @Get()
     findOne(@Req() req: Request): Promise<UserEntity> {
         try {
-            return this.ContactsService.findOne(req)
+            return this.ContactsService.findOne(req);
         }
-        catch { throw new Error() }
-
+        catch { throw new Error(); }
     }
 
     @Post()
     update(@Body() data: ContactsDTO, @Req() req: Request): string {
         try {
-            this.ContactsService.update(req, data)
-            return 'Contact info succefully updated!'
+            this.ContactsService.update(req, data);
+            return 'Contact info succefully updated!';
         } catch {
-            throw new Error('Something went wrong')
+            throw new Error('Something went wrong');
         }
     }
 
     @Get('/all')
     findAll(): Promise<UserEntity[]> {
-        try { return this.ContactsService.find() }
-        catch { throw new Error() }
+        try { return this.ContactsService.find(); }
+        catch { throw new Error(); }
     }
 }

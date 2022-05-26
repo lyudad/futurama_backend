@@ -39,9 +39,9 @@ export class UserEntity {
   })
   role: string;
 
-  @OneToMany(() => ProposalsEntity, proposal => proposal.userId )
+  @OneToMany(() => ProposalsEntity, proposal => proposal.userId)
   @JoinColumn()
-  proposals: ProposalsEntity[]
+  proposals: ProposalsEntity[];
 
   @OneToOne(() => ProfileEntity, profile => profile.user)
   @JoinColumn()

@@ -36,7 +36,7 @@ export class FilesController {
       return {
         photoUrl,
       };
-    } catch { throw new Error() }
+    } catch { throw new Error(); }
 
   }
 
@@ -48,6 +48,6 @@ export class FilesController {
         status: HttpStatus.OK,
         data: response,
       };
-    } catch { throw new Error() }
+    } catch { throw new Error(); }
   }
 }

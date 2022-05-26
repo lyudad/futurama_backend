@@ -22,9 +22,9 @@ export class VacanciesEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => ProposalsEntity, ProposalsEntity => ProposalsEntity.vacancyId )
+  @OneToMany(() => ProposalsEntity, ProposalsEntity => ProposalsEntity.vacancyId)
   @JoinColumn()
-  public proposals: ProposalsEntity[]
+  public proposals: ProposalsEntity[];
 
   @ApiProperty({ example: '1', description: 'category_id' })
   @ManyToOne(() => CategoriesEntity)
@@ -51,7 +51,7 @@ export class VacanciesEntity {
   location: string;
 
   @ApiProperty({ example: 'Very good project', description: 'description' })
-  @Column("varchar", { length: 500 })
+  @Column('text')
   description: string;
 
   @ApiProperty({ example: 'Intermediate', description: 'english level' })

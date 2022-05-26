@@ -12,5 +12,5 @@ export class ContactsDTO {
     email: string;
 
     @IsNotEmpty()
-    phone: string; 
+    phone: string;
 }

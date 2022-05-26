@@ -44,7 +44,7 @@ export class VacanciesController {
       throw error;
     }
   }
-  
+
   @ApiOperation({ summary: 'Getting vacancy by ID' })
   @ApiResponse({ status: 200, type: VacanciesDTO })
   @Get('vacancies/:id')

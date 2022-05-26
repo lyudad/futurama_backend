@@ -4,13 +4,13 @@ import { VacanciesEntity } from '../vacancies/entities/vacancies.entity';
 
 
 export class ProposalsDTO {
-  
-  @IsNotEmpty()
-  userId: UserEntity
 
   @IsNotEmpty()
-  vacancyId: VacanciesEntity
-  
+  userId: UserEntity;
+
+  @IsNotEmpty()
+  vacancyId: VacanciesEntity;
+
   @IsNotEmpty()
   price: number;
 

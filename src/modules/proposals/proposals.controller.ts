@@ -1,11 +1,12 @@
 import {
   Controller,
   Post,
-  Body
+  Body,
+  Get,
+  Param
 } from '@nestjs/common';
 import { ProposalsService } from './proposals.service';
 import { ProposalsDTO } from './proposalsDTO';
-
 
 
 @Controller('/proposal')
@@ -14,14 +15,11 @@ export class ProposalsController {
 
   @Post('/send')
   async createProposal(@Body() body: ProposalsDTO): Promise<void> {
-    try {
-      await this.proposalsService.createProposal(body);
-    } catch (error) {
-      throw error;
-    }
+    await this.proposalsService.createProposal(body);
+  }
+
+  @Get('/:id')
+  async getProposalByVacancyId(@Param('id') id: number): Promise<object> {
+    return await this.proposalsService.getProposalsByVacancyId(id);
   }
 }
-
-
-
-
