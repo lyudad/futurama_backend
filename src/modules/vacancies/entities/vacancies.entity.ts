@@ -51,7 +51,7 @@ export class VacanciesEntity {
   location: string;
 
   @ApiProperty({ example: 'Very good project', description: 'description' })
-  @Column('varchar', { length: 500 })
+  @Column('text')
   description: string;
 
   @ApiProperty({ example: 'Intermediate', description: 'english level' })

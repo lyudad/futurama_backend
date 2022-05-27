@@ -55,16 +55,19 @@ export class VacanciesService {
     }
   }
 
-  async getVacanciesByQuery(query: string): Promise<VacanciesEntity[]> {
+  async findVacancies(title: string): Promise<VacanciesEntity[]> {
     try {
-      const vacancies = await this.vacanciesRepository
+      const database = await this.vacanciesRepository
         .createQueryBuilder('vacancy')
-        .where('vacancy.title like :query', { query: `%${query}%` })
         .leftJoinAndSelect('vacancy.category', 'category')
         .leftJoinAndSelect('vacancy.skills', 'skills')
-        .leftJoinAndSelect('vacancy.owner', 'users')
-        .orderBy('vacancy.createdAt', 'DESC')
-        .getMany();
+        .leftJoinAndSelect('vacancy.owner', 'users');
+
+      if (title) {
+        database.andWhere('vacancy.title like :title', { title: `%${title}%` });
+      }
+
+      const vacancies = database.orderBy('vacancy.createdAt', 'DESC').getMany();
       if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
       return vacancies;
     } catch (error) {

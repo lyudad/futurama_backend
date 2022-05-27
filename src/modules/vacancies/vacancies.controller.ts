@@ -13,7 +13,7 @@ export class VacanciesController {
 
   @ApiOperation({ summary: 'Creating vacancy' })
   @ApiResponse({ status: 201, type: VacanciesDTO })
-  @Post('vacancies')
+  @Post('add_vacancy')
   async createVacancy(@Body() body: VacanciesDTO): Promise<void> {
     try {
       await this.vacanciesService.createVacancy(body);
@@ -33,27 +33,14 @@ export class VacanciesController {
     }
   }
 
-  @ApiOperation({ summary: 'Getting all vacancies' })
+  @ApiOperation({ summary: 'Find vacancies by query' })
   @ApiResponse({ status: 200, type: VacanciesDTO })
-  @Get('vacancies')
-  async getAllVacancies(): Promise<VacanciesEntity[]> {
-    try {
-      const vacancies = await this.vacanciesService.getAllVacancies();
-      return vacancies;
-    } catch (error) {
-      throw error;
-    }
-  }
-  @ApiOperation({ summary: 'Getting all vacancies' })
-  @ApiResponse({ status: 200, type: VacanciesDTO })
-  @Get('vacancies_by_query')
+  @Post('vacancies')
   async getVacanciesByQuery(
     @Body() body: VacanciesDTO,
   ): Promise<VacanciesEntity[]> {
     try {
-      const vacancies = await this.vacanciesService.getVacanciesByQuery(
-        body.title,
-      );
+      const vacancies = await this.vacanciesService.findVacancies(body.title);
       return vacancies;
     } catch (error) {
       throw error;
