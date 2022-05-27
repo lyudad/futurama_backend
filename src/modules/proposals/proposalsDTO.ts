@@ -6,10 +6,10 @@ import { VacanciesEntity } from '../vacancies/entities/vacancies.entity';
 export class ProposalsDTO {
 
   @IsNotEmpty()
-  userId: UserEntity;
+  user: UserEntity;
 
   @IsNotEmpty()
-  vacancyId: VacanciesEntity;
+  vacancy: VacanciesEntity;
 
   @IsNotEmpty()
   price: number;

@@ -20,8 +20,8 @@ export class ProposalsEntity {
   price: number;
 
   @ManyToOne(() => UserEntity, UserEntity => UserEntity.id)
-  public userId: UserEntity;
+  public user: string;
 
   @ManyToOne(() => VacanciesEntity, VacanciesEntity => VacanciesEntity.id)
-  public vacancyId: VacanciesEntity;
+  public vacancy: VacanciesEntity;
 }

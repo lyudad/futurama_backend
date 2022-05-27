@@ -5,27 +5,29 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { VacanciesEntity } from '../vacancies/entities/vacancies.entity';
+import { Request } from 'express';
+
+import { ContactsService } from '../user/contact-info/contacts.service';
 import { ProposalsEntity } from './proposals.entity';
 import { ProposalsDTO } from './proposalsDTO';
+
 
 @Injectable()
 export class ProposalsService {
   constructor(
     @InjectRepository(ProposalsEntity)
-    private readonly proposalsRepository: Repository<ProposalsEntity>,
-    @InjectRepository(VacanciesEntity)
-    private readonly vacanciesRepository: Repository<VacanciesEntity>,
+    private readonly proposalsRepository: Repository<ProposalsEntity>
   ) { }
 
-  async createProposal(proposal: ProposalsDTO): Promise<ProposalsEntity> {
+  async createProposal(req: Request, proposal: ProposalsDTO): Promise<ProposalsEntity> {
+    const id = ContactsService.extractId(req);
     try {
       await this.proposalsRepository
         .createQueryBuilder()
         .insert()
-        .values(proposal)
+        .values({ ...proposal, user: id })
         .execute();
-      throw new HttpException('Done', HttpStatus.OK);
+      throw new HttpException('Done!', HttpStatus.OK);
     } catch (error) {
       throw error;
     }
@@ -33,8 +35,8 @@ export class ProposalsService {
   async getProposalsByVacancyId(id: number): Promise<object> {
     const vacancy = await this.proposalsRepository
       .createQueryBuilder('proposals')
-      .where('vacancyIdId = :id', { id })
-      .leftJoinAndSelect('proposals.userId', 'users')
+      .where('vacancyId = :id', { id })
+      .leftJoinAndSelect('proposals.user', 'users')
       .getMany();
     return vacancy;
   }

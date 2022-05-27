@@ -39,7 +39,7 @@ export class UserEntity {
   })
   role: string;
 
-  @OneToMany(() => ProposalsEntity, proposal => proposal.userId)
+  @OneToMany(() => ProposalsEntity, proposal => proposal.user)
   @JoinColumn()
   proposals: ProposalsEntity[];
 

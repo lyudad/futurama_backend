@@ -22,7 +22,7 @@ export class VacanciesService {
     private readonly categoriesRepository: Repository<CategoriesEntity>,
     @InjectRepository(VacanciesEntity)
     private readonly vacanciesRepository: Repository<VacanciesEntity>,
-  ) {}
+  ) { }
 
   async createVacancy(Vacancy: VacanciesDTO): Promise<VacanciesEntity> {
     try {

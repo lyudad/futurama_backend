@@ -6,7 +6,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiTags('Sending email')
 @Controller('mail')
 export class MailController {
-  constructor(private readonly mailService: MailService) {}
+  constructor(private readonly mailService: MailService) { }
 
   @ApiOperation({ summary: 'Sending email' })
   @ApiResponse({ status: 201, type: UserDTO })

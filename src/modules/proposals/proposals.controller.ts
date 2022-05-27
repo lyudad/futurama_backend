@@ -3,8 +3,10 @@ import {
   Post,
   Body,
   Get,
-  Param
+  Param,
+  Req
 } from '@nestjs/common';
+import { Request } from 'express';
 import { ProposalsService } from './proposals.service';
 import { ProposalsDTO } from './proposalsDTO';
 
@@ -14,8 +16,8 @@ export class ProposalsController {
   constructor(private readonly proposalsService: ProposalsService) { }
 
   @Post('/send')
-  async createProposal(@Body() body: ProposalsDTO): Promise<void> {
-    await this.proposalsService.createProposal(body);
+  async createProposal(@Body() body: ProposalsDTO, @Req() req: Request): Promise<void> {
+    await this.proposalsService.createProposal(req, body);
   }
 
   @Get('/:id')

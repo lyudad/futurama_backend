@@ -22,7 +22,7 @@ export class VacanciesEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => ProposalsEntity, ProposalsEntity => ProposalsEntity.vacancyId)
+  @OneToMany(() => ProposalsEntity, ProposalsEntity => ProposalsEntity.vacancy)
   @JoinColumn()
   public proposals: ProposalsEntity[];
 
