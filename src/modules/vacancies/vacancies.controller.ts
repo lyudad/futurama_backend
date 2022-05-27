@@ -7,9 +7,9 @@ import { VacanciesService } from './vacancies.service';
 import { VacanciesEntity } from './entities/vacancies.entity';
 
 @ApiTags('Create vacancies')
-@Controller('search_work')
+@Controller('search-work')
 export class VacanciesController {
-  constructor(private readonly vacanciesService: VacanciesService) {}
+  constructor(private readonly vacanciesService: VacanciesService) { }
 
   @ApiOperation({ summary: 'Creating vacancy' })
   @ApiResponse({ status: 201, type: VacanciesDTO })

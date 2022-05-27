@@ -4,11 +4,13 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { ProfileEntity } from '../profile/entities/profile.entity';
+import { ProposalsEntity } from '../proposals/proposals.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -36,6 +38,10 @@ export class UserEntity {
     nullable: true,
   })
   role: string;
+
+  @OneToMany(() => ProposalsEntity, proposal => proposal.user)
+  @JoinColumn()
+  proposals: ProposalsEntity[];
 
   @OneToOne(() => ProfileEntity, profile => profile.user)
   @JoinColumn()

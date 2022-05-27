@@ -12,4 +12,4 @@ import { WorkExperienceEntity } from './entities/workExperience.entity';
   providers: [ProfileService],
   controllers: [ProfileController]
 })
-export class ProfileModule {}
+export class ProfileModule { }

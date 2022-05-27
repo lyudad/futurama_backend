@@ -10,9 +10,9 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
-  ) {}
+  ) { }
 
-  async login(data: UserDTO): Promise<object>{
+  async login(data: UserDTO): Promise<object> {
     const { email, password } = data;
     const user = await this.userRepository.findOne({ where: { email } });
 
@@ -25,7 +25,7 @@ export class UserService {
     return user.toResponceObject();
   }
 
-  async register(data: User): Promise<object>{
+  async register(data: User): Promise<object> {
     let user = await this.userRepository.findOne({ where: { email: data.email } });
     if (user) {
       throw new HttpException(
@@ -33,7 +33,7 @@ export class UserService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    user = this.userRepository.create(data);
+    user = this.userRepository.create({ ...data, phone: '', photo: '' });
     return this.userRepository.save(user);
   }
 }

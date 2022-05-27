@@ -9,4 +9,4 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   controllers: [MailController],
   imports: [TypeOrmModule.forFeature([UserEntity])],
 })
-export class MailModule {}
+export class MailModule { }

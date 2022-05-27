@@ -9,7 +9,7 @@ import { ApiTags } from '@nestjs/swagger';
 @ApiTags('Contact info')
 @Controller('user/contacts')
 export class ContactsController {
-  constructor(private readonly ContactsService: ContactsService) {}
+  constructor(private readonly ContactsService: ContactsService) { }
 
   @Get()
   findOne(@Req() req: Request): Promise<UserEntity> {
