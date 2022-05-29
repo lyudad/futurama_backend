@@ -12,6 +12,7 @@ import { VacanciesEntity } from './entities/vacancies.entity';
 import { SkillsDTO } from './dto/skills.dto';
 import { CategoriesDTO } from './dto/categories.dto';
 import { VacanciesDTO } from './dto/vacancies.dto';
+import { findVacanciesDTO } from './dto/findVacancies.dto';
 
 @Injectable()
 export class VacanciesService {
@@ -55,23 +56,84 @@ export class VacanciesService {
     }
   }
 
-  async findVacancies(title: string): Promise<VacanciesEntity[]> {
+  async findVacancies(
+    page: number,
+    {
+      title,
+      englishLevel,
+      minPrice,
+      maxPrice,
+      minTimePerWeek,
+      maxTimePerWeek,
+      categoryId,
+      skillsId,
+    }: findVacanciesDTO,
+  ): Promise<VacanciesEntity[]> {
     try {
-      const database = await this.vacanciesRepository
+      let skip = 0;
+      let take = 50;
+      const pagination = (page: number) => {
+        skip = (page - 1) * 50;
+        take = skip + 50;
+      };
+      pagination(page);
+
+      let database = await this.vacanciesRepository
         .createQueryBuilder('vacancy')
         .leftJoinAndSelect('vacancy.category', 'category')
         .leftJoinAndSelect('vacancy.skills', 'skills')
         .leftJoinAndSelect('vacancy.owner', 'users');
 
       if (title) {
-        database.andWhere('vacancy.title like :title', { title: `%${title}%` });
+        database = database.andWhere('vacancy.title like :title', {
+          title: `%${title}%`,
+        });
+      }
+      if (englishLevel) {
+        database = database.andWhere('vacancy.englishLevel = :englishLevel', {
+          englishLevel,
+        });
+      }
+      if (minPrice) {
+        database = database.andWhere('vacancy.price >= :minPrice', {
+          minPrice,
+        });
+      }
+      if (maxPrice) {
+        database = database.andWhere('vacancy.price <= :maxPrice', {
+          maxPrice,
+        });
+      }
+      if (minTimePerWeek) {
+        database = database.andWhere('vacancy.timePerWeek >= :minTimePerWeek', {
+          minTimePerWeek,
+        });
+      }
+      if (maxTimePerWeek) {
+        database = database.andWhere('vacancy.timePerWeek <= :maxTimePerWeek', {
+          maxTimePerWeek,
+        });
+      }
+      if (categoryId) {
+        database = database.andWhere('vacancy.category = :categoryId', {
+          categoryId,
+        });
+      }
+      if (skillsId.length > 0) {
+        database = database.andWhere('skills.id IN (:...skillsId)', {
+          skillsId,
+        });
       }
 
-      const vacancies = database.orderBy('vacancy.createdAt', 'DESC').getMany();
+      const vacancies = database
+        .orderBy('vacancy.createdAt', 'DESC')
+        .skip(skip)
+        .take(take)
+        .getMany();
       if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
       return vacancies;
     } catch (error) {
-      throw new ConflictException(error.sqlMessage);
+      throw new ConflictException(error);
     }
   }
 
