@@ -11,7 +11,7 @@ import { ProposalsService } from './proposals.service';
 import { ProposalsDTO } from './proposalsDTO';
 
 
-@Controller('/proposal')
+@Controller('/proposals')
 export class ProposalsController {
   constructor(private readonly proposalsService: ProposalsService) { }
 
@@ -19,7 +19,14 @@ export class ProposalsController {
   async createProposal(@Body() body: ProposalsDTO, @Req() req: Request): Promise<void> {
     await this.proposalsService.createProposal(req, body);
   }
-
+  @Get('/myproposals')
+  async getProposalsByUserId(@Req() req: Request): Promise<object> {
+    return await this.proposalsService.getProposalsByUserId(req);
+  }
+  @Get('/check/:id')
+  async checkProposalsExist(@Param('id') vacancyId: number, @Req() req: Request): Promise<boolean> {
+    return await this.proposalsService.checkProposalsExist(req, vacancyId);
+  }
   @Get('/:id')
   async getProposalByVacancyId(@Param('id') id: number): Promise<object> {
     return await this.proposalsService.getProposalsByVacancyId(id);
