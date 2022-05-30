@@ -1,4 +1,4 @@
-import { Controller, Post, Delete, Get, Body } from '@nestjs/common';
+import { Controller, Post, Delete, Get, Body, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SkillsDTO } from './dto/skills.dto';
 import { CategoriesDTO } from './dto/categories.dto';
@@ -9,11 +9,11 @@ import { VacanciesEntity } from './entities/vacancies.entity';
 @ApiTags('Create vacancies')
 @Controller('search-work')
 export class VacanciesController {
-  constructor(private readonly vacanciesService: VacanciesService) {}
+  constructor(private readonly vacanciesService: VacanciesService) { }
 
   @ApiOperation({ summary: 'Creating vacancy' })
   @ApiResponse({ status: 201, type: VacanciesDTO })
-  @Post('vacancies')
+  @Post('add_vacancy')
   async createVacancy(@Body() body: VacanciesDTO): Promise<void> {
     try {
       await this.vacanciesService.createVacancy(body);
@@ -33,13 +33,26 @@ export class VacanciesController {
     }
   }
 
-  @ApiOperation({ summary: 'Getting all vacancies' })
+  @ApiOperation({ summary: 'Find vacancies by query' })
   @ApiResponse({ status: 200, type: VacanciesDTO })
-  @Get('vacancies')
-  async getAllVacancies(): Promise<VacanciesEntity[]> {
+  @Post('vacancies')
+  async getVacanciesByQuery(
+    @Body() body: VacanciesDTO,
+  ): Promise<VacanciesEntity[]> {
     try {
-      const vacancies = await this.vacanciesService.getAllVacancies();
+      const vacancies = await this.vacanciesService.findVacancies(body.title);
       return vacancies;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @ApiOperation({ summary: 'Getting vacancy by ID' })
+  @ApiResponse({ status: 200, type: VacanciesDTO })
+  @Get('vacancies/:id')
+  async getVacancyById(@Param('id') id: number): Promise<VacanciesEntity> {
+    try {
+      return await this.vacanciesService.getVacancyById(id);
     } catch (error) {
       throw error;
     }

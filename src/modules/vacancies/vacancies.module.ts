@@ -13,4 +13,4 @@ import { VacanciesEntity } from './entities/vacancies.entity';
   controllers: [VacanciesController],
   providers: [VacanciesService],
 })
-export class VacanciesModule {}
+export class VacanciesModule { }

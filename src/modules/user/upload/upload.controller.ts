@@ -8,8 +8,9 @@ import { Repository } from 'typeorm';
 import { UserEntity } from '../user.entity';
 import { editFileName, imageFileFilter } from './utils/file-upload.utils';
 import { ContactsService } from '../contact-info/contacts.service';
+import { ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags('Upload photo')
 @Controller('upload')
 export class FilesController {
   constructor(
@@ -35,8 +36,9 @@ export class FilesController {
       return {
         photoUrl,
       };
-    } catch { throw new Error() }
-
+    } catch {
+      throw new Error();
+    }
   }
 
   @Get(':imagename')
@@ -47,6 +49,8 @@ export class FilesController {
         status: HttpStatus.OK,
         data: response,
       };
-    } catch { throw new Error() }
+    } catch {
+      throw new Error();
+    }
   }
 }

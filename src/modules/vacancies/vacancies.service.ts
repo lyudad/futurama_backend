@@ -22,7 +22,7 @@ export class VacanciesService {
     private readonly categoriesRepository: Repository<CategoriesEntity>,
     @InjectRepository(VacanciesEntity)
     private readonly vacanciesRepository: Repository<VacanciesEntity>,
-  ) {}
+  ) { }
 
   async createVacancy(Vacancy: VacanciesDTO): Promise<VacanciesEntity> {
     try {
@@ -55,16 +55,54 @@ export class VacanciesService {
     }
   }
 
+  async findVacancies(title: string): Promise<VacanciesEntity[]> {
+    try {
+      const database = await this.vacanciesRepository
+        .createQueryBuilder('vacancy')
+        .leftJoinAndSelect('vacancy.category', 'category')
+        .leftJoinAndSelect('vacancy.skills', 'skills')
+        .leftJoinAndSelect('vacancy.owner', 'users');
+
+      if (title) {
+        database.andWhere('vacancy.title like :title', { title: `%${title}%` });
+      }
+
+      const vacancies = database.orderBy('vacancy.createdAt', 'DESC').getMany();
+      if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
+      return vacancies;
+    } catch (error) {
+      throw new ConflictException(error.sqlMessage);
+    }
+  }
+
   async getAllVacancies(): Promise<VacanciesEntity[]> {
     try {
       const vacancies = await this.vacanciesRepository
         .createQueryBuilder('vacancy')
         .leftJoinAndSelect('vacancy.category', 'category')
         .leftJoinAndSelect('vacancy.skills', 'skills')
+        .leftJoinAndSelect('vacancy.owner', 'users')
         .orderBy('vacancy.createdAt', 'DESC')
         .getMany();
       if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
       return vacancies;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getVacancyById(id: number): Promise<VacanciesEntity> {
+    try {
+      const vacancy = await this.vacanciesRepository
+        .createQueryBuilder('vacancy')
+        .where('vacancy.id = :id', { id })
+        .leftJoinAndSelect('vacancy.category', 'category')
+        .leftJoinAndSelect('vacancy.skills', 'skills')
+        .leftJoinAndSelect('vacancy.owner', 'users')
+        .getOne();
+
+      if (!vacancy) throw new HttpException('400', HttpStatus.BAD_REQUEST);
+      return vacancy;
     } catch (error) {
       throw new ConflictException(error.sqlMessage);
     }

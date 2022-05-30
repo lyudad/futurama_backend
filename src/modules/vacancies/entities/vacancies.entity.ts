@@ -2,22 +2,29 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { CategoriesEntity } from './categories.entity';
 import { SkillsEntity } from './skills.entity';
-// import { UserEntity } from 'modules/user/user.entity';
+import { ProposalsEntity } from '../../proposals/proposals.entity';
+import { UserEntity } from 'src/modules/user/user.entity';
 
 @Entity('vacancies')
 export class VacanciesEntity {
   @ApiProperty({ example: '1', description: 'id' })
   @PrimaryGeneratedColumn()
   id: number;
+
+  @OneToMany(() => ProposalsEntity, ProposalsEntity => ProposalsEntity.vacancy)
+  @JoinColumn()
+  public proposals: ProposalsEntity[];
 
   @ApiProperty({ example: '1', description: 'category_id' })
   @ManyToOne(() => CategoriesEntity)
@@ -28,8 +35,8 @@ export class VacanciesEntity {
   skills: SkillsEntity[];
 
   @ApiProperty({ example: '1', description: 'owner_id' })
-  @Column()
-  ownerId: number;
+  @ManyToOne(() => UserEntity)
+  owner: UserEntity;
 
   @ApiProperty({ example: 'Junior js developer', description: 'title' })
   @Column()
@@ -44,18 +51,18 @@ export class VacanciesEntity {
   location: string;
 
   @ApiProperty({ example: 'Very good project', description: 'description' })
-  @Column()
+  @Column('text')
   description: string;
 
-  @ApiProperty({ example: 'Entermediate', description: 'english level' })
+  @ApiProperty({ example: 'Intermediate', description: 'english level' })
   @Column({
     type: 'enum',
     enum: [
-      'elementary',
-      'pre-intermediate',
-      'intermediate',
-      'upper-intermediate',
-      'advanced',
+      'Elementary',
+      'Pre-intermediate',
+      'Intermediate',
+      'Upper-intermediate',
+      'Advanced',
     ],
   })
   englishLevel: string;
@@ -76,3 +83,5 @@ export class VacanciesEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 }
+
+

@@ -1,7 +1,16 @@
-import { BeforeInsert, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { ProfileEntity } from '../profile/entities/profile.entity';
+import { ProposalsEntity } from '../proposals/proposals.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -17,10 +26,10 @@ export class UserEntity {
   @Column('text')
   email: string;
 
-  @Column({type: 'text', nullable: true})
+  @Column({ type: 'text', nullable: true })
   phone: string;
 
-  @Column({type: 'text', nullable: true})
+  @Column({ type: 'text', nullable: true })
   photo: string;
 
   @Column({
@@ -29,6 +38,10 @@ export class UserEntity {
     nullable: true,
   })
   role: string;
+
+  @OneToMany(() => ProposalsEntity, proposal => proposal.user)
+  @JoinColumn()
+  proposals: ProposalsEntity[];
 
   @OneToOne(() => ProfileEntity, profile => profile.user)
   @JoinColumn()
@@ -60,10 +73,10 @@ export class UserEntity {
     return jwt.sign(
       {
         id,
-        email
+        email,
       },
       process.env.SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: '7d' },
     );
   }
 }

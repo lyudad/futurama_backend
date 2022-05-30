@@ -6,7 +6,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 @ApiTags('Password-reset')
 @Controller('password')
 export class PasswordResetController {
-  constructor(private readonly passwordResetService: PasswordResetService) {}
+  constructor(private readonly passwordResetService: PasswordResetService) { }
 
   @ApiOperation({ summary: 'Changing password' })
   @ApiResponse({ status: 200, type: UserDTO })

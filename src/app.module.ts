@@ -5,11 +5,13 @@ import { UserModule } from './modules/user/user.module';
 import { UserEntity } from './modules/user/user.entity';
 import { PasswordResetModule } from './modules/password-reset/password-reset.module';
 import { MailModule } from './modules/mail/mail.module';
-import { ProfileModule } from './modules/profile/profile.module';
-import { VacanciesModule } from './modules/vacancies/vacancies.module';
 import { UploadModule } from './modules/user/upload/upload.module';
 import { MulterModule } from '@nestjs/platform-express';
-import { ContactsModule } from './modules/user/contact-info/contacts.module'
+import { ContactsModule } from './modules/user/contact-info/contacts.module';
+import { VacanciesModule } from './modules/vacancies/vacancies.module';
+import { ProfileModule } from './modules/profile/profile.module';
+import { ProposalsModule } from './modules/proposals/proposals.module';
+
 
 @Module({
   controllers: [],
@@ -31,23 +33,17 @@ import { ContactsModule } from './modules/user/contact-info/contacts.module'
       autoLoadEntities: true,
     }),
     UserModule,
-
     PasswordResetModule,
-
     MailModule,
-
     ProfileModule,
-
-    VacanciesModule,
 
     MulterModule.register({
       dest: './uploads',
     }),
-
     UploadModule,
-    
+    VacanciesModule,
+    ProposalsModule,
     ContactsModule
-
   ],
 })
 export class AppModule { }
