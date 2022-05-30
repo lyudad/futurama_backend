@@ -33,11 +33,31 @@ export class ProposalsService {
     }
   }
   async getProposalsByVacancyId(id: number): Promise<object> {
-    const vacancy = await this.proposalsRepository
+    const proposals = await this.proposalsRepository
       .createQueryBuilder('proposals')
       .where('vacancyId = :id', { id })
       .leftJoinAndSelect('proposals.user', 'users')
       .getMany();
-    return vacancy;
+    return proposals;
+  }
+  async getProposalsByUserId(req: Request): Promise<object> {
+    const id = ContactsService.extractId(req);
+    const proposals = await this.proposalsRepository
+      .createQueryBuilder('proposals')
+      .where('userId = :id', { id })
+      .leftJoinAndSelect('proposals.vacancy', 'vacancies')
+      .getMany();
+    return proposals;
+  }
+  async checkProposalsExist(req: Request, vacancyId: number): Promise<boolean> {
+    const userId = ContactsService.extractId(req);
+    const proposals = await this.proposalsRepository
+      .createQueryBuilder('proposals')
+      .where('userId = :userId', { userId })
+      .where('vacancyId = :vacancyId', { vacancyId })
+      .getMany();
+    if (proposals.length === 1) {
+      return true;
+    } else return false;
   }
 }
