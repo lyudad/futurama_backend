@@ -65,7 +65,7 @@ export class ProposalsService {
     } else return false;
   }
 
-  async getVacanciesByOwnerId(req: Request): Promise<VacanciesEntity[]> {
+  async getVacanciesByOwnerId(req: Request): Promise<object[]> {
     const ownerId = ContactsService.extractId(req);
     try {
       const vacancies = await this.vacanciesRepository

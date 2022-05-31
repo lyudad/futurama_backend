@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn
@@ -24,4 +25,7 @@ export class ProposalsEntity {
 
   @ManyToOne(() => VacanciesEntity, VacanciesEntity => VacanciesEntity.id)
   public vacancy: VacanciesEntity;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

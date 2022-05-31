@@ -29,7 +29,7 @@ export class ProposalsController {
     return await this.proposalsService.checkProposalsExist(req, vacancyId);
   }
   @Get('/myjobs')
-  async getVacanciesByOwnerId(@Req() req: Request): Promise<VacanciesEntity[]> {
+  async getVacanciesByOwnerId(@Req() req: Request): Promise<object[]> {
     return await this.proposalsService.getVacanciesByOwnerId(req);
   }
   @Get('/:id')
