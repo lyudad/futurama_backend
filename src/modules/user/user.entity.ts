@@ -56,11 +56,8 @@ export class UserEntity {
   }
 
   toResponceObject(showToken = true): object {
-    const { firstName, lastName, email, token, phone, photo } = this;
-    const responceObject = {
-      user: { firstName, lastName, email, phone, photo },
-      token,
-    };
+    const { firstName, lastName, email, token, phone, photo, role } = this;
+    const responceObject = { user: { firstName, lastName, email, phone, photo, role }, token };
     if (showToken) {
       responceObject.token = token;
     }
