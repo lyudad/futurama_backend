@@ -23,6 +23,7 @@ export class VacanciesEntity {
   @ManyToOne(() => CategoriesEntity)
   category: CategoriesEntity;
 
+  @ApiProperty({ example: '[1, 2]', description: 'skills_id' })
   @ManyToMany(() => SkillsEntity)
   @JoinTable({ name: 'vacancies_skills' })
   skills: SkillsEntity[];

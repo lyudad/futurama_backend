@@ -72,9 +72,11 @@ export class VacanciesService {
     try {
       let skip = 0;
       let take = 50;
-      const pagination = (page: number) => {
-        skip = (page - 1) * 50;
-        take = skip + 50;
+      const pagination = (page?: number) => {
+        if (page) {
+          skip = Number(page - 1) * 50;
+          take = skip + 50;
+        }
       };
       pagination(page);
 
@@ -119,7 +121,7 @@ export class VacanciesService {
           categoryId,
         });
       }
-      if (skillsId.length > 0) {
+      if (skillsId?.length > 0) {
         database = database.andWhere('skills.id IN (:...skillsId)', {
           skillsId,
         });
