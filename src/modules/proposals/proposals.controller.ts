@@ -7,6 +7,7 @@ import {
   Req
 } from '@nestjs/common';
 import { Request } from 'express';
+import { VacanciesEntity } from '../vacancies/entities/vacancies.entity';
 import { ProposalsService } from './proposals.service';
 import { ProposalsDTO } from './proposalsDTO';
 
@@ -26,6 +27,10 @@ export class ProposalsController {
   @Get('/check/:id')
   async checkProposalsExist(@Param('id') vacancyId: number, @Req() req: Request): Promise<boolean> {
     return await this.proposalsService.checkProposalsExist(req, vacancyId);
+  }
+  @Get('/myjobs')
+  async getVacanciesByOwnerId(@Req() req: Request): Promise<VacanciesEntity[]> {
+    return await this.proposalsService.getVacanciesByOwnerId(req);
   }
   @Get('/:id')
   async getProposalByVacancyId(@Param('id') id: number): Promise<object> {
