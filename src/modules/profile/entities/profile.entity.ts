@@ -1,19 +1,26 @@
 import { UserEntity } from 'src/modules/user/user.entity';
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { EducationEntity } from './education.entity';
 import { SkillsEntity } from '../../vacancies/entities/skills.entity';
 import { WorkExperienceEntity } from './workExperience.entity';
+import { CategoriesEntity } from 'src/modules/vacancies/entities/categories.entity';
 
 @Entity('profile')
 export class ProfileEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: [
+      'Elementary',
+      'Pre-intermediate',
+      'Intermediate',
+      'Upper-intermediate',
+      'Advanced',
+    ],
+  })
   englishLevel: string;
-
-  @Column()
-  position: string;
 
   @Column()
   desirebleSalaryLevel: number;
@@ -26,6 +33,10 @@ export class ProfileEntity {
 
   @Column()
   description: string;
+
+  @ManyToOne(() => CategoriesEntity)
+  @JoinColumn()
+  position: CategoriesEntity;
 
   @OneToOne(() => UserEntity, user => user.profile)
   @JoinColumn()

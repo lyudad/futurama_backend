@@ -1,10 +1,19 @@
-import { Controller, Post, Delete, Get, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Delete,
+  Get,
+  Body,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SkillsDTO } from './dto/skills.dto';
 import { CategoriesDTO } from './dto/categories.dto';
 import { VacanciesDTO } from './dto/vacancies.dto';
 import { VacanciesService } from './vacancies.service';
 import { VacanciesEntity } from './entities/vacancies.entity';
+import { findVacanciesDTO } from './dto/findVacancies.dto';
 
 @ApiTags('Create vacancies')
 @Controller('search-work')
@@ -34,13 +43,14 @@ export class VacanciesController {
   }
 
   @ApiOperation({ summary: 'Find vacancies by query' })
-  @ApiResponse({ status: 200, type: VacanciesDTO })
+  @ApiResponse({ status: 200, type: findVacanciesDTO })
   @Post('vacancies')
   async getVacanciesByQuery(
-    @Body() body: VacanciesDTO,
+    @Body() body: findVacanciesDTO,
+    @Query('page') page: number,
   ): Promise<VacanciesEntity[]> {
     try {
-      const vacancies = await this.vacanciesService.findVacancies(body.title);
+      const vacancies = await this.vacanciesService.findVacancies(page, body);
       return vacancies;
     } catch (error) {
       throw error;
