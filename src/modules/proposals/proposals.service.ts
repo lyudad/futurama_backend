@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -10,13 +11,16 @@ import { Request } from 'express';
 import { ContactsService } from '../user/contact-info/contacts.service';
 import { ProposalsEntity } from './proposals.entity';
 import { ProposalsDTO } from './proposalsDTO';
+import { VacanciesEntity } from '../vacancies/entities/vacancies.entity';
 
 
 @Injectable()
 export class ProposalsService {
   constructor(
     @InjectRepository(ProposalsEntity)
-    private readonly proposalsRepository: Repository<ProposalsEntity>
+    private readonly proposalsRepository: Repository<ProposalsEntity>,
+    @InjectRepository(VacanciesEntity)
+    private readonly vacanciesRepository: Repository<VacanciesEntity>
   ) { }
 
   async createProposal(req: Request, proposal: ProposalsDTO): Promise<ProposalsEntity> {
@@ -54,10 +58,26 @@ export class ProposalsService {
     const proposals = await this.proposalsRepository
       .createQueryBuilder('proposals')
       .where('userId = :userId', { userId })
-      .where('vacancyId = :vacancyId', { vacancyId })
+      .andWhere('vacancyId = :vacancyId', { vacancyId })
       .getMany();
     if (proposals.length === 1) {
       return true;
     } else return false;
+  }
+
+  async getVacanciesByOwnerId(req: Request): Promise<object[]> {
+    const ownerId = ContactsService.extractId(req);
+    try {
+      const vacancies = await this.vacanciesRepository
+        .createQueryBuilder('vacancy')
+        .where('ownerId = :ownerId', { ownerId })
+        .leftJoinAndSelect('vacancy.skills', 'skills')
+        .leftJoinAndSelect('vacancy.proposals', 'proposals')
+        .leftJoinAndSelect('proposals.user', 'users')
+        .getMany();
+      return vacancies;
+    } catch (error) {
+      throw new ConflictException(error.sqlMessage);
+    }
   }
 }
