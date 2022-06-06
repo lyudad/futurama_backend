@@ -16,7 +16,7 @@ import { VacanciesEntity } from './entities/vacancies.entity';
 import { findVacanciesDTO } from './dto/findVacancies.dto';
 
 @ApiTags('Create vacancies')
-@Controller('search-work')
+@Controller('search_work')
 export class VacanciesController {
   constructor(private readonly vacanciesService: VacanciesService) { }
 
