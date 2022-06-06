@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ProfileEntity } from '../profile/entities/profile.entity';
 import { UserDTO } from './dto/user.login';
 import { User } from './dto/user.register';
 import { UserEntity } from './user.entity';
@@ -10,6 +11,8 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(ProfileEntity)
+    private readonly profileRepository: Repository<ProfileEntity>,
   ) { }
 
   async login(data: UserDTO): Promise<object> {
@@ -34,6 +37,10 @@ export class UserService {
       );
     }
     user = this.userRepository.create({ ...data, phone: '', photo: '' });
-    return this.userRepository.save(user);
+    const result = await this.userRepository.save(user);
+    const profile = this.profileRepository.create();
+    profile.user = result;
+    await this.profileRepository.save(profile);
+    return result.toResponceObject();
   }
 }

@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ProfileEntity } from './profile.entity';
 
@@ -12,9 +13,11 @@ export class EducationEntity {
   @Column()
   level: string;
 
+  @Type(() => Date)
   @Column()
   start: Date;
 
+  @Type(() => Date)
   @Column()
   end: Date;
 
