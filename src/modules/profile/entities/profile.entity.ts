@@ -28,10 +28,10 @@ export class ProfileEntity {
   @Column()
   availableAmountOfHours: number;
 
-  @Column()
+  @Column('text')
   otherExperience: string;
 
-  @Column()
+  @Column('text')
   description: string;
 
   @ManyToOne(() => CategoriesEntity)
