@@ -1,4 +1,4 @@
-import { Controller, Headers, Get, HttpException, HttpStatus, Post, Body, Param, Delete, Patch } from '@nestjs/common';
+import { Controller, Headers, Get, HttpException, HttpStatus, Post, Body, Param, Delete, Patch, Put } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { encodeJwt } from 'src/utils/jwt';
 import { EducationDTO } from './dto/education.dto';
@@ -47,7 +47,7 @@ export class ProfileController {
 
     @ApiOperation({ summary: 'Update education' })
     @ApiResponse({ status: 201, type: EducationDTO })
-    @Patch('education/update')
+    @Put('education/update')
     async updateEducation(@Body() body: EducationDTO): Promise<void> {  
         try {
         await this.profileService.updateEducation(body);
@@ -80,7 +80,7 @@ export class ProfileController {
 
     @ApiOperation({ summary: 'Update work experience' })
     @ApiResponse({ status: 201, type: WorkExperienceDTO })
-    @Patch('experience/update')
+    @Put('experience/update')
     async updateWorkExperience(@Body() body: WorkExperienceDTO): Promise<void> {  
         try {
         await this.profileService.updateWorkExperience(body);
