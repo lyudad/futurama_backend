@@ -23,7 +23,7 @@ export class VacanciesService {
     private readonly categoriesRepository: Repository<CategoriesEntity>,
     @InjectRepository(VacanciesEntity)
     private readonly vacanciesRepository: Repository<VacanciesEntity>,
-  ) { }
+  ) {}
 
   async createVacancy(Vacancy: VacanciesDTO): Promise<VacanciesEntity> {
     try {
@@ -56,30 +56,17 @@ export class VacanciesService {
     }
   }
 
-  async findVacancies(
-    page: number,
-    {
-      title,
-      englishLevel,
-      minPrice,
-      maxPrice,
-      minTimePerWeek,
-      maxTimePerWeek,
-      categoryId,
-      skillsId,
-    }: findVacanciesDTO,
-  ): Promise<VacanciesEntity[]> {
+  async findVacancies({
+    title,
+    categories,
+    skills,
+    englishLevel,
+    minPrice,
+    maxPrice,
+    minTimePerWeek,
+    maxTimePerWeek,
+  }: findVacanciesDTO): Promise<VacanciesEntity[]> {
     try {
-      let skip = 0;
-      let take = 50;
-      const pagination = (page?: number) => {
-        if (page) {
-          skip = Number(page - 1) * 50;
-          take = skip + 50;
-        }
-      };
-      pagination(page);
-
       let database = await this.vacanciesRepository
         .createQueryBuilder('vacancy')
         .leftJoinAndSelect('vacancy.category', 'category')
@@ -89,6 +76,16 @@ export class VacanciesService {
       if (title) {
         database = database.andWhere('vacancy.title like :title', {
           title: `%${title}%`,
+        });
+      }
+      if (categories?.length > 0) {
+        database = database.andWhere('category.category IN (:...categories)', {
+          categories,
+        });
+      }
+      if (skills?.length > 0) {
+        database = database.andWhere('skills.skill IN (:...skills)', {
+          skills,
         });
       }
       if (englishLevel) {
@@ -116,22 +113,8 @@ export class VacanciesService {
           maxTimePerWeek,
         });
       }
-      if (categoryId) {
-        database = database.andWhere('vacancy.category = :categoryId', {
-          categoryId,
-        });
-      }
-      if (skillsId?.length > 0) {
-        database = database.andWhere('skills.id IN (:...skillsId)', {
-          skillsId,
-        });
-      }
 
-      const vacancies = database
-        .orderBy('vacancy.createdAt', 'DESC')
-        .skip(skip)
-        .take(take)
-        .getMany();
+      const vacancies = database.orderBy('vacancy.createdAt', 'DESC').getMany();
       if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
       return vacancies;
     } catch (error) {
@@ -148,6 +131,67 @@ export class VacanciesService {
         .leftJoinAndSelect('vacancy.owner', 'users')
         .orderBy('vacancy.createdAt', 'DESC')
         .getMany();
+      if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
+      return vacancies;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getVacancyWithMinPrice(): Promise<VacanciesEntity> {
+    try {
+      const vacancies = await this.vacanciesRepository
+        .createQueryBuilder('vacancy')
+        .leftJoinAndSelect('vacancy.category', 'category')
+        .leftJoinAndSelect('vacancy.skills', 'skills')
+        .leftJoinAndSelect('vacancy.owner', 'users')
+        .orderBy('vacancy.price')
+        .getOne();
+      if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
+      return vacancies;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getVacancyWithMaxPrice(): Promise<VacanciesEntity> {
+    try {
+      const vacancies = await this.vacanciesRepository
+        .createQueryBuilder('vacancy')
+        .leftJoinAndSelect('vacancy.category', 'category')
+        .leftJoinAndSelect('vacancy.skills', 'skills')
+        .leftJoinAndSelect('vacancy.owner', 'users')
+        .orderBy('vacancy.price', 'DESC')
+        .getOne();
+      if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
+      return vacancies;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getVacancyWithMinDuration(): Promise<VacanciesEntity> {
+    try {
+      const vacancies = await this.vacanciesRepository
+        .createQueryBuilder('vacancy')
+        .leftJoinAndSelect('vacancy.category', 'category')
+        .leftJoinAndSelect('vacancy.skills', 'skills')
+        .leftJoinAndSelect('vacancy.owner', 'users')
+        .orderBy('vacancy.timePerWeek')
+        .getOne();
+      if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
+      return vacancies;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getVacancyWithMaxDuration(): Promise<VacanciesEntity> {
+    try {
+      const vacancies = await this.vacanciesRepository
+        .createQueryBuilder('vacancy')
+        .leftJoinAndSelect('vacancy.category', 'category')
+        .leftJoinAndSelect('vacancy.skills', 'skills')
+        .leftJoinAndSelect('vacancy.owner', 'users')
+        .orderBy('vacancy.timePerWeek', 'DESC')
+        .getOne();
       if (!vacancies) throw new HttpException('400', HttpStatus.BAD_REQUEST);
       return vacancies;
     } catch (error) {
