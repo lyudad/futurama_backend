@@ -19,19 +19,27 @@ export class ProfileEntity {
       'Upper-intermediate',
       'Advanced',
     ],
+    nullable: true
   })
   englishLevel: string;
 
-  @Column()
+  @Column({nullable: true})
   desirebleSalaryLevel: number;
 
-  @Column()
+  @Column({nullable: true})
   availableAmountOfHours: number;
 
+<<<<<<< HEAD
   @Column('text')
   otherExperience: string;
 
   @Column('text')
+=======
+  @Column({nullable: true})
+  otherExperience: string;
+
+  @Column({nullable: true})
+>>>>>>> develop
   description: string;
 
   @ManyToOne(() => CategoriesEntity)
