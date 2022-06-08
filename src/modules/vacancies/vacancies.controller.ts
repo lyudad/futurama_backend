@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Post,
-  Delete,
-  Get,
-  Body,
-  Param,
-  Query,
-} from '@nestjs/common';
+import { Controller, Post, Delete, Get, Body, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SkillsDTO } from './dto/skills.dto';
 import { CategoriesDTO } from './dto/categories.dto';
@@ -18,7 +10,7 @@ import { findVacanciesDTO } from './dto/findVacancies.dto';
 @ApiTags('Create vacancies')
 @Controller('search_work')
 export class VacanciesController {
-  constructor(private readonly vacanciesService: VacanciesService) { }
+  constructor(private readonly vacanciesService: VacanciesService) {}
 
   @ApiOperation({ summary: 'Creating vacancy' })
   @ApiResponse({ status: 201, type: VacanciesDTO })
@@ -47,10 +39,57 @@ export class VacanciesController {
   @Post('vacancies')
   async getVacanciesByQuery(
     @Body() body: findVacanciesDTO,
-    @Query('page') page: number,
   ): Promise<VacanciesEntity[]> {
     try {
-      const vacancies = await this.vacanciesService.findVacancies(page, body);
+      const vacancies = await this.vacanciesService.findVacancies(body);
+      return vacancies;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @ApiOperation({ summary: 'Find vacancy with min price' })
+  @ApiResponse({ status: 200, type: findVacanciesDTO })
+  @Get('vacancy_with_min_price')
+  async getVacancyWithMinPrice(): Promise<VacanciesEntity> {
+    try {
+      const vacancies = await this.vacanciesService.getVacancyWithMinPrice();
+      return vacancies;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @ApiOperation({ summary: 'Find vacancy with max price' })
+  @ApiResponse({ status: 200, type: findVacanciesDTO })
+  @Get('vacancy_with_max_price')
+  async getVacancyWithMaxPrice(): Promise<VacanciesEntity> {
+    try {
+      const vacancies = await this.vacanciesService.getVacancyWithMaxPrice();
+      return vacancies;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @ApiOperation({ summary: 'Find vacancy with min duration' })
+  @ApiResponse({ status: 200, type: findVacanciesDTO })
+  @Get('vacancy_with_min_duration')
+  async getVacancyWithMinDuration(): Promise<VacanciesEntity> {
+    try {
+      const vacancies = await this.vacanciesService.getVacancyWithMinDuration();
+      return vacancies;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @ApiOperation({ summary: 'Find vacancy with min duration' })
+  @ApiResponse({ status: 200, type: findVacanciesDTO })
+  @Get('vacancy_with_max_duration')
+  async getVacancyWithMaxDuration(): Promise<VacanciesEntity> {
+    try {
+      const vacancies = await this.vacanciesService.getVacancyWithMaxDuration();
       return vacancies;
     } catch (error) {
       throw error;

@@ -2,20 +2,20 @@ import { IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class findVacanciesDTO {
+  @ApiProperty({ example: 'Junior js developer', description: 'title' })
+  @IsNotEmpty()
+  title: string;
+
   @ApiProperty({
     example: '["Development", "Project Managment"]',
     description: 'categories',
   })
   @IsNotEmpty()
-  categoryId: number;
+  categories: [string];
 
   @ApiProperty({ example: 'JS, Nestjs', description: 'skills' })
   @IsNotEmpty()
-  skillsId: [number];
-
-  @ApiProperty({ example: 'Junior js developer', description: 'title' })
-  @IsNotEmpty()
-  title: string;
+  skills: [string];
 
   @ApiProperty({ example: 'Entermediate', description: 'english level' })
   @IsNotEmpty()
