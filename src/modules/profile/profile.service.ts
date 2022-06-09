@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { VacanciesEntity } from '../vacancies/entities/vacancies.entity';
 import { EducationDTO } from './dto/education.dto';
 import { ProfileDTO } from './dto/profile.dto';
 import { WorkExperienceDTO } from './dto/workExperience.dto';
@@ -17,6 +18,8 @@ export class ProfileService {
     private readonly educationRepository: Repository<EducationEntity>,
     @InjectRepository(WorkExperienceEntity)
     private readonly workExperienceRepository: Repository<WorkExperienceEntity>,
+    @InjectRepository(VacanciesEntity)
+    private vacanciesRepository: Repository<VacanciesEntity>,
   ) { }
 
   async getProfile(id: number): Promise<object> {
@@ -144,13 +147,18 @@ export class ProfileService {
   }
 
   async getAllProfiles(): Promise<ProfileEntity[]> {
+    const owner: string = '13';
+    const category = this.vacanciesRepository.createQueryBuilder('vacancy')
+      .select('vacancy.category')
+      .innerJoin('vacancy.category', 'categories')
+      .where('ownerId = :owner', { owner });
     const profiles = await this.profileRepository.createQueryBuilder('profile')
+      .where("profile.position IN (" + category.getQuery() + ")")
+      .setParameters(category.getParameters())
       .leftJoin('profile.user', 'users')
       .addSelect(['users.id', 'users.firstName', 'users.lastName', 'users.phone', 'users.photo'])
-      .leftJoin('profile.position', 'categories')
-      .addSelect(['categories.category'])
-      .leftJoin('profile.skills', 'skills')
-      .addSelect(['skills.skill'])
+      .leftJoinAndSelect('profile.position', 'categories')
+      .leftJoinAndSelect('profile.skills', 'skills')
       .leftJoinAndSelect('profile.workExperience', 'workExperience')
       .leftJoinAndSelect('profile.educations', 'educations')
       .getMany();
