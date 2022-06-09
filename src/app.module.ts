@@ -11,6 +11,7 @@ import { ContactsModule } from './modules/user/contact-info/contacts.module';
 import { VacanciesModule } from './modules/vacancies/vacancies.module';
 import { ProfileModule } from './modules/profile/profile.module';
 import { ProposalsModule } from './modules/proposals/proposals.module';
+import { ContractsModule } from './modules/contracts/contracts.module';
 
 
 @Module({
@@ -43,7 +44,8 @@ import { ProposalsModule } from './modules/proposals/proposals.module';
     UploadModule,
     VacanciesModule,
     ProposalsModule,
-    ContactsModule
+    ContactsModule,
+    ContractsModule
   ],
 })
 export class AppModule { }
