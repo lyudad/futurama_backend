@@ -15,9 +15,10 @@ export class ContractsService {
         try {
             const contracts = await this.contractsRepository
             .createQueryBuilder('contracts')
-            .select(['contracts', 'owner.firstName', 'owner.lastName', 'owner.photo'])
+            .select(['contracts', 'owner.id', 'owner.firstName', 'owner.lastName', 'owner.photo'])
             .leftJoin('contracts.owner', 'owner')
             .where('contracts.freelancer = :id', { id })
+            .orderBy('contracts.start', 'DESC')
             .getMany();
             return contracts;
         } catch (error) {
@@ -29,9 +30,10 @@ export class ContractsService {
         try {
             const contracts = await this.contractsRepository
             .createQueryBuilder('contracts')
-            .select(['contracts', 'owner.firstName', 'owner.lastName', 'owner.photo'])
+            .select(['contracts', 'owner.id', 'owner.firstName', 'owner.lastName', 'owner.photo'])
             .leftJoin('contracts.owner', 'owner')
             .where('contracts.owner = :id', { id })
+            .orderBy('contracts.start', 'DESC')
             .getMany();
             return contracts;
         } catch (error) {
