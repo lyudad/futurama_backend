@@ -1,14 +1,21 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ExampleModule } from './modules/example/example.module';
-import { ExampleUser } from './modules/example/example.entity';
+import { UserModule } from './modules/user/user.module';
+import { UserEntity } from './modules/user/user.entity';
+import { PasswordResetModule } from './modules/password-reset/password-reset.module';
+import { MailModule } from './modules/mail/mail.module';
+import { UploadModule } from './modules/user/upload/upload.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { ContactsModule } from './modules/user/contact-info/contacts.module';
+import { VacanciesModule } from './modules/vacancies/vacancies.module';
+import { ProfileModule } from './modules/profile/profile.module';
+import { ProposalsModule } from './modules/proposals/proposals.module';
+
 
 @Module({
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',
@@ -21,12 +28,22 @@ import { ExampleUser } from './modules/example/example.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [ExampleUser],
+      entities: [UserEntity],
       synchronize: true,
       autoLoadEntities: true,
     }),
+    UserModule,
+    PasswordResetModule,
+    MailModule,
+    ProfileModule,
 
-    ExampleModule,
+    MulterModule.register({
+      dest: './uploads',
+    }),
+    UploadModule,
+    VacanciesModule,
+    ProposalsModule,
+    ContactsModule
   ],
 })
-export class AppModule {}
+export class AppModule { }
