@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
+import { VacanciesEntity } from '../vacancies/entities/vacancies.entity';
   
 @Entity('contracts')
 export class ContractsEntity {
@@ -35,5 +36,9 @@ export class ContractsEntity {
     @ManyToOne(() => UserEntity)
     @JoinColumn()
     owner: UserEntity;
+
+    @ManyToOne(() => VacanciesEntity)
+    @JoinColumn()
+    vacancy: VacanciesEntity;
 }
   
