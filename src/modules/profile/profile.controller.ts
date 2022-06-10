@@ -1,4 +1,4 @@
-import { Controller, Headers, Get, HttpException, HttpStatus, Post, Body, Param, Delete, Patch, Put } from '@nestjs/common';
+import { Controller, Headers, Get, HttpException, HttpStatus, Post, Body, Param, Delete, Patch, Put, Req } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { encodeJwt } from 'src/utils/jwt';
 import { EducationDTO } from './dto/education.dto';
@@ -6,6 +6,7 @@ import { ProfileDTO } from './dto/profile.dto';
 import { WorkExperienceDTO } from './dto/workExperience.dto';
 import { ProfileEntity } from './entities/profile.entity';
 import { ProfileService } from './profile.service';
+import { Request } from 'express';
 
 @ApiTags('Profile')
 @Controller('profile')
@@ -103,8 +104,8 @@ export class ProfileController {
 
     @ApiOperation({ summary: 'Get all profiles' })
     @Get('all')
-    async getAllProfiles(): Promise<ProfileEntity[]> {
-        return this.profileService.getAllProfiles();
+    async getProfilesForCurrentOwner(@Req() req: Request): Promise<ProfileEntity[]> {
+        return this.profileService.getProfilesForOwner(req);
     }
 
     @ApiOperation({ summary: 'Get profiles by ID' })

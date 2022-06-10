@@ -1,6 +1,7 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ContactsService } from '../user/contact-info/contacts.service';
 import { VacanciesEntity } from '../vacancies/entities/vacancies.entity';
 import { EducationDTO } from './dto/education.dto';
 import { ProfileDTO } from './dto/profile.dto';
@@ -8,6 +9,7 @@ import { WorkExperienceDTO } from './dto/workExperience.dto';
 import { EducationEntity } from './entities/education.entity';
 import { ProfileEntity } from './entities/profile.entity';
 import { WorkExperienceEntity } from './entities/workExperience.entity';
+import { Request } from 'express';
 
 @Injectable()
 export class ProfileService {
@@ -146,8 +148,8 @@ export class ProfileService {
     }
   }
 
-  async getAllProfiles(): Promise<ProfileEntity[]> {
-    const owner: string = '13';
+  async getProfilesForOwner(@Req() req: Request): Promise<ProfileEntity[]> {
+    const owner = ContactsService.extractId(req);
     const category = this.vacanciesRepository.createQueryBuilder('vacancy')
       .select('vacancy.category')
       .innerJoin('vacancy.category', 'categories')
