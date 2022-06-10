@@ -1,4 +1,4 @@
-import { Controller, Headers, Get, HttpException, HttpStatus, Post, Body, Param, Delete, Patch, Put, Req } from '@nestjs/common';
+import { Controller, Headers, Get, HttpException, HttpStatus, Post, Body, Param, Delete, Put, Req } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { encodeJwt } from 'src/utils/jwt';
 import { EducationDTO } from './dto/education.dto';
@@ -13,8 +13,7 @@ import { Request } from 'express';
 export class ProfileController {
     constructor(private profileService: ProfileService) { }
     @Get('')
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any    
-    getMyProfile(@Headers() headers: any): Promise<object> {
+    getMyProfile(@Headers() headers): Promise<object> {
         if (!headers.token) {
             throw new HttpException(
                 'Unauthorized',
