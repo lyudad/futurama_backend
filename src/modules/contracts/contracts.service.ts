@@ -56,10 +56,8 @@ export class ContractsService {
 
     async updateContract(contract: ContractsDTO): Promise<ContractsEntity>{
         try {
-            await this.contractsRepository
-            .createQueryBuilder()
-            .update(contract)
-            .execute()
+            const data = this.contractsRepository.findOne({where: {id: contract.id}})            
+            await this.contractsRepository.save({...data, ...contract});
             throw new HttpException('Contract saved successfully', HttpStatus.OK);
         } catch (error) {
             throw error;
