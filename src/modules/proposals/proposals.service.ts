@@ -41,6 +41,7 @@ export class ProposalsService {
       .createQueryBuilder('proposals')
       .where('vacancyId = :id', { id })
       .leftJoinAndSelect('proposals.user', 'users')
+      .leftJoinAndSelect('proposals.vacancy', 'vacancy')
       .getMany();
     return proposals;
   }
@@ -73,7 +74,8 @@ export class ProposalsService {
         .where('ownerId = :ownerId', { ownerId })
         .leftJoinAndSelect('vacancy.skills', 'skills')
         .leftJoinAndSelect('vacancy.proposals', 'proposals')
-        .leftJoinAndSelect('proposals.user', 'users')
+        .leftJoin('proposals.user', 'users')
+        .addSelect(['users.firstName', 'users.lastName', 'users.phone', 'users.photo'])
         .getMany();
       return vacancies;
     } catch (error) {

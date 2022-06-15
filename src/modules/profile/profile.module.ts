@@ -6,9 +6,10 @@ import { ProfileEntity } from './entities/profile.entity';
 import { SkillsEntity } from '../vacancies/entities/skills.entity';
 import { EducationEntity } from './entities/education.entity';
 import { WorkExperienceEntity } from './entities/workExperience.entity';
+import { VacanciesEntity } from '../vacancies/entities/vacancies.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ProfileEntity, SkillsEntity, EducationEntity, WorkExperienceEntity])],
+  imports: [TypeOrmModule.forFeature([ProfileEntity, SkillsEntity, EducationEntity, WorkExperienceEntity, VacanciesEntity])],
   providers: [ProfileService],
   controllers: [ProfileController]
 })

@@ -7,7 +7,6 @@ import {
   Req
 } from '@nestjs/common';
 import { Request } from 'express';
-import { VacanciesEntity } from '../vacancies/entities/vacancies.entity';
 import { ProposalsService } from './proposals.service';
 import { ProposalsDTO } from './proposalsDTO';
 
