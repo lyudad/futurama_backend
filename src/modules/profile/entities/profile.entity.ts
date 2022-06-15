@@ -29,10 +29,10 @@ export class ProfileEntity {
   @Column({ nullable: true })
   availableAmountOfHours: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, length: 1000 })
   otherExperience: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, length: 1000 })
   description: string;
 
   @ManyToOne(() => CategoriesEntity)

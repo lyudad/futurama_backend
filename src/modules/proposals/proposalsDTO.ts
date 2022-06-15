@@ -16,4 +16,10 @@ export class ProposalsDTO {
 
   @IsNotEmpty()
   coverLetter: string;
+
+  @IsNotEmpty()
+  status: string;
+
+  @IsNotEmpty()
+  type: string;
 }

@@ -23,13 +23,12 @@ export class ProposalsService {
     private readonly vacanciesRepository: Repository<VacanciesEntity>
   ) { }
 
-  async createProposal(req: Request, proposal: ProposalsDTO): Promise<ProposalsEntity> {
-    const id = ContactsService.extractId(req);
+  async createProposal(proposal: ProposalsDTO): Promise<ProposalsEntity> {
     try {
       await this.proposalsRepository
         .createQueryBuilder()
         .insert()
-        .values({ ...proposal, user: id })
+        .values({ ...proposal })
         .execute();
       throw new HttpException('Done!', HttpStatus.OK);
     } catch (error) {
@@ -40,6 +39,7 @@ export class ProposalsService {
     const proposals = await this.proposalsRepository
       .createQueryBuilder('proposals')
       .where('vacancyId = :id', { id })
+      .andWhere('proposals.type = :type', { type: "Proposal" })
       .leftJoinAndSelect('proposals.user', 'users')
       .leftJoinAndSelect('proposals.vacancy', 'vacancy')
       .getMany();
@@ -50,6 +50,7 @@ export class ProposalsService {
     const proposals = await this.proposalsRepository
       .createQueryBuilder('proposals')
       .where('userId = :id', { id })
+      .andWhere('proposals.type = :type', { type: "Proposal" })
       .leftJoinAndSelect('proposals.vacancy', 'vacancies')
       .getMany();
     return proposals;
@@ -71,9 +72,9 @@ export class ProposalsService {
     try {
       const vacancies = await this.vacanciesRepository
         .createQueryBuilder('vacancy')
-        .where('ownerId = :ownerId', { ownerId })
+        .where('ownerId = :ownerId', { ownerId })        
         .leftJoinAndSelect('vacancy.skills', 'skills')
-        .leftJoinAndSelect('vacancy.proposals', 'proposals')
+        .leftJoinAndSelect('vacancy.proposals', 'proposals')        
         .leftJoin('proposals.user', 'users')
         .addSelect(['users.id', 'users.firstName', 'users.lastName', 'users.phone', 'users.photo'])
         .getMany();
