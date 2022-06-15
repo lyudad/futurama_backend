@@ -75,7 +75,7 @@ export class ProposalsService {
         .leftJoinAndSelect('vacancy.skills', 'skills')
         .leftJoinAndSelect('vacancy.proposals', 'proposals')
         .leftJoin('proposals.user', 'users')
-        .addSelect(['users.firstName', 'users.lastName', 'users.phone', 'users.photo'])
+        .addSelect(['users.id', 'users.firstName', 'users.lastName', 'users.phone', 'users.photo'])
         .getMany();
       return vacancies;
     } catch (error) {
