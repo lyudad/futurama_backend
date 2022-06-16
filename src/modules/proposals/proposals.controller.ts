@@ -23,6 +23,10 @@ export class ProposalsController {
   async getProposalsByUserId(@Req() req: Request): Promise<object> {
     return await this.proposalsService.getProposalsByUserId(req);
   }
+  @Get('/myinvites')
+  async getInvitesByUserId(@Req() req: Request): Promise<object> {
+    return await this.proposalsService.getInvitesByUserId(req);
+  }
   @Get('/check/:id')
   async checkProposalsExist(@Param('id') vacancyId: number, @Req() req: Request): Promise<boolean> {
     return await this.proposalsService.checkProposalsExist(req, vacancyId);

@@ -55,6 +55,21 @@ export class ProposalsService {
       .getMany();
     return proposals;
   }
+  async getInvitesByUserId(req: Request): Promise<object> {
+    const id = ContactsService.extractId(req);
+    const invites = await this.proposalsRepository
+      .createQueryBuilder('proposals')
+      .where('userId = :id', { id })
+      .andWhere('proposals.type = :type', { type: "Invite" })
+      .leftJoin('proposals.vacancy', 'vacancies')
+      .addSelect(['vacancies.category', 'vacancies.title', 'vacancies.description', 'vacancies.price'])
+      .leftJoinAndSelect('vacancies.category', 'categories')   
+      .leftJoinAndSelect('vacancies.skills', 'skills')      
+      .leftJoin('vacancies.owner', 'users')
+      .addSelect(['users.firstName', 'users.lastName'])
+      .getMany();
+    return invites;
+  }
   async checkProposalsExist(req: Request, vacancyId: number): Promise<boolean> {
     const userId = ContactsService.extractId(req);
     const proposals = await this.proposalsRepository
@@ -72,9 +87,9 @@ export class ProposalsService {
     try {
       const vacancies = await this.vacanciesRepository
         .createQueryBuilder('vacancy')
-        .where('ownerId = :ownerId', { ownerId })        
+        .where('ownerId = :ownerId', { ownerId })
         .leftJoinAndSelect('vacancy.skills', 'skills')
-        .leftJoinAndSelect('vacancy.proposals', 'proposals')        
+        .leftJoinAndSelect('vacancy.proposals', 'proposals')
         .leftJoin('proposals.user', 'users')
         .addSelect(['users.id', 'users.firstName', 'users.lastName', 'users.phone', 'users.photo'])
         .getMany();
