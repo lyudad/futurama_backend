@@ -3,7 +3,8 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
 } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
 import { VacanciesEntity } from '../vacancies/entities/vacancies.entity';
@@ -14,18 +15,40 @@ export class ProposalsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('text')
+  @Column({
+    type: 'enum',
+    enum: [
+      'Proposal',
+      'Invite'
+    ]
+  })
+  type: string;
+
+  @Column({ nullable: true, length: 500 })
   coverLetter: string;
 
-  @Column()
+  @Column({ nullable: true })
   price: number;
 
   @ManyToOne(() => UserEntity, UserEntity => UserEntity.id)
-  public user: string;
+  public user: UserEntity;
 
   @ManyToOne(() => VacanciesEntity, VacanciesEntity => VacanciesEntity.id)
   public vacancy: VacanciesEntity;
 
+  @Column({
+    type: 'enum',
+    enum: [
+      'Accepted',
+      'Pending',
+      'Declined'
+    ]
+  })
+  status: string;
+
   @CreateDateColumn()
   createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

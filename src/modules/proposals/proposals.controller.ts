@@ -16,12 +16,16 @@ export class ProposalsController {
   constructor(private readonly proposalsService: ProposalsService) { }
 
   @Post('/send')
-  async createProposal(@Body() body: ProposalsDTO, @Req() req: Request): Promise<void> {
-    await this.proposalsService.createProposal(req, body);
+  async createProposal(@Body() body: ProposalsDTO ): Promise<void> {
+    await this.proposalsService.createProposal(body);
   }
   @Get('/myproposals')
   async getProposalsByUserId(@Req() req: Request): Promise<object> {
     return await this.proposalsService.getProposalsByUserId(req);
+  }
+  @Get('/myinvites')
+  async getInvitesByUserId(@Req() req: Request): Promise<object> {
+    return await this.proposalsService.getInvitesByUserId(req);
   }
   @Get('/check/:id')
   async checkProposalsExist(@Param('id') vacancyId: number, @Req() req: Request): Promise<boolean> {

@@ -23,13 +23,12 @@ export class ProposalsService {
     private readonly vacanciesRepository: Repository<VacanciesEntity>
   ) { }
 
-  async createProposal(req: Request, proposal: ProposalsDTO): Promise<ProposalsEntity> {
-    const id = ContactsService.extractId(req);
+  async createProposal(proposal: ProposalsDTO): Promise<ProposalsEntity> {
     try {
       await this.proposalsRepository
         .createQueryBuilder()
         .insert()
-        .values({ ...proposal, user: id })
+        .values({ ...proposal })
         .execute();
       throw new HttpException('Done!', HttpStatus.OK);
     } catch (error) {
@@ -40,6 +39,7 @@ export class ProposalsService {
     const proposals = await this.proposalsRepository
       .createQueryBuilder('proposals')
       .where('vacancyId = :id', { id })
+      .andWhere('proposals.type = :type', { type: "Proposal" })
       .leftJoinAndSelect('proposals.user', 'users')
       .leftJoinAndSelect('proposals.vacancy', 'vacancy')
       .getMany();
@@ -50,9 +50,25 @@ export class ProposalsService {
     const proposals = await this.proposalsRepository
       .createQueryBuilder('proposals')
       .where('userId = :id', { id })
+      .andWhere('proposals.type = :type', { type: "Proposal" })
       .leftJoinAndSelect('proposals.vacancy', 'vacancies')
       .getMany();
     return proposals;
+  }
+  async getInvitesByUserId(req: Request): Promise<object> {
+    const id = ContactsService.extractId(req);
+    const invites = await this.proposalsRepository
+      .createQueryBuilder('proposals')
+      .where('userId = :id', { id })
+      .andWhere('proposals.type = :type', { type: "Invite" })
+      .leftJoin('proposals.vacancy', 'vacancies')
+      .addSelect(['vacancies.category', 'vacancies.title', 'vacancies.description', 'vacancies.price'])
+      .leftJoinAndSelect('vacancies.category', 'categories')   
+      .leftJoinAndSelect('vacancies.skills', 'skills')      
+      .leftJoin('vacancies.owner', 'users')
+      .addSelect(['users.firstName', 'users.lastName'])
+      .getMany();
+    return invites;
   }
   async checkProposalsExist(req: Request, vacancyId: number): Promise<boolean> {
     const userId = ContactsService.extractId(req);
@@ -75,7 +91,7 @@ export class ProposalsService {
         .leftJoinAndSelect('vacancy.skills', 'skills')
         .leftJoinAndSelect('vacancy.proposals', 'proposals')
         .leftJoin('proposals.user', 'users')
-        .addSelect(['users.firstName', 'users.lastName', 'users.phone', 'users.photo'])
+        .addSelect(['users.id', 'users.firstName', 'users.lastName', 'users.phone', 'users.photo'])
         .getMany();
       return vacancies;
     } catch (error) {

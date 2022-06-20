@@ -31,7 +31,7 @@ export class ProfileService {
       .leftJoinAndSelect('profile.educations', 'educations')
       .leftJoinAndSelect('profile.position', 'categories')
       .leftJoin('profile.user', 'users')
-      .addSelect(['users.firstName', 'users.lastName', 'users.phone', 'users.photo'])
+      .addSelect(['users.email', 'users.firstName', 'users.lastName', 'users.phone', 'users.photo'])
       .where('profile.user = :id', { id })
       .getOne();
 

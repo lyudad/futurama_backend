@@ -23,16 +23,16 @@ export class ProfileEntity {
   })
   englishLevel: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   desirebleSalaryLevel: number;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   availableAmountOfHours: number;
 
-  @Column('text')
+  @Column({ nullable: true, length: 1000 })
   otherExperience: string;
 
-  @Column('text')
+  @Column({ nullable: true, length: 1000 })
   description: string;
 
   @ManyToOne(() => CategoriesEntity)

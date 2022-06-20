@@ -107,7 +107,7 @@ export class ProfileController {
         return this.profileService.getProfilesForOwner(req);
     }
 
-    @ApiOperation({ summary: 'Get profiles by ID' })
+    @ApiOperation({ summary: 'Get profile by ID' })
     @Get('/:id')
     getProfileById(@Param('id') id: number): Promise<object> {
         return this.profileService.getProfile(id);
