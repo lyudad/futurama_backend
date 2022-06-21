@@ -2,7 +2,7 @@ import {
     PrimaryGeneratedColumn,
     CreateDateColumn,
     Entity,
-    Column
+    ManyToOne
 } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
 
@@ -15,9 +15,9 @@ export default class ChatsEntity {
     @CreateDateColumn()
     createdAt: Date;
 
-    @Column()
-    freelancer:UserEntity;
+    @ManyToOne(() => UserEntity, UserEntity => UserEntity.id)
+    public freelancer: UserEntity;
 
-    @Column()
-    owner:UserEntity;
+    @ManyToOne(() => UserEntity, UserEntity => UserEntity.id)
+    public owner: UserEntity;
 }

@@ -15,7 +15,7 @@ export default class MessageEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'text', length: 500 })
+  @Column({ type: 'text'})
   messageBody: string;
 
   @ManyToOne(() => UserEntity, (users: UserEntity) => users.id, {
