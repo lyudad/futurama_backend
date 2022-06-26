@@ -1,11 +1,12 @@
 import { IsNotEmpty } from 'class-validator';
 import { UserEntity } from '../user/user.entity';
+import { VacanciesEntity } from '../vacancies/entities/vacancies.entity';
 
 export class ChatsDTO {
 
   @IsNotEmpty()
-  freelancer: UserEntity;
+  freelancerId: UserEntity;
 
   @IsNotEmpty()
-  owner: UserEntity;
+  vacancy: VacanciesEntity;
 }

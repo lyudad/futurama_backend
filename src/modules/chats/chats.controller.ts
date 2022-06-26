@@ -1,8 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
-  Param,
   Post
 } from '@nestjs/common';
 import ChatsEntity from './chats.entity';
@@ -16,11 +14,6 @@ import MessageDTO from './message/messageDTO';
 @Controller('/chats')
 export class ChatsController {
   constructor(private readonly chatsService: ChatsService) { }
-
-  //  @Get('/:id')
-  // async getMessagesByChatId(@Param('id') chatId: number): Promise<MessageEntity[]> {
-  //     return await this.messageService.getMessagesByChatId(chatId);
-  // }
 
   @Post('/create')
   async create(@Body() body: ChatsDTO): Promise<void> {

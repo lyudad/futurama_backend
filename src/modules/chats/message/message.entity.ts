@@ -19,7 +19,7 @@ export default class MessageEntity {
   messageBody: string;
 
   @ManyToOne(() => UserEntity, (users: UserEntity) => users.id, {
-    nullable: false,
+    nullable: true,
   })
   @JoinColumn({ name: 'author' })
   author: UserEntity;
@@ -31,5 +31,5 @@ export default class MessageEntity {
   chatId: ChatsEntity;
 
   @CreateDateColumn()
-  sent: Date;
+  createdAt: Date;
 }

@@ -5,6 +5,7 @@ import {
     ManyToOne
 } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
+import { VacanciesEntity } from '../vacancies/entities/vacancies.entity';
 
 
 @Entity('chats')
@@ -18,6 +19,6 @@ export default class ChatsEntity {
     @ManyToOne(() => UserEntity, UserEntity => UserEntity.id)
     public freelancer: UserEntity;
 
-    @ManyToOne(() => UserEntity, UserEntity => UserEntity.id)
-    public owner: UserEntity;
+    @ManyToOne(() => VacanciesEntity, VacanciesEntity => VacanciesEntity.id)
+    public vacancy: VacanciesEntity;
 }

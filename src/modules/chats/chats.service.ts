@@ -1,14 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity } from '../user/user.entity';
 import { ChatsDTO } from './chatsDTO';
 import ChatsEntity from './chats.entity';
-import MessageEntity from './message/message.entity';
 
 @Injectable()
 export class ChatsService {
-    constructor(      
+    constructor(
         @InjectRepository(ChatsEntity)
         private readonly chatsRepository: Repository<ChatsEntity>,
     ) {
