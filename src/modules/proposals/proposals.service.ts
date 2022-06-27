@@ -62,7 +62,7 @@ export class ProposalsService {
       .where('userId = :id', { id })
       .andWhere('proposals.type = :type', { type: "Invite" })
       .leftJoin('proposals.vacancy', 'vacancies')
-      .addSelect(['vacancies.category', 'vacancies.title', 'vacancies.description', 'vacancies.price'])
+      .addSelect(['vacancies.category', 'vacancies.id', 'vacancies.title', 'vacancies.description', 'vacancies.price'])
       .leftJoinAndSelect('vacancies.category', 'categories')   
       .leftJoinAndSelect('vacancies.skills', 'skills')      
       .leftJoin('vacancies.owner', 'users')
@@ -77,7 +77,7 @@ export class ProposalsService {
       .where('userId = :userId', { userId })
       .andWhere('vacancyId = :vacancyId', { vacancyId })
       .getMany();
-    if (proposals.length === 1) {
+    if (proposals.length !== 0) {
       return true;
     } else return false;
   }

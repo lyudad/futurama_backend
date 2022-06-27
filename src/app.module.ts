@@ -12,6 +12,8 @@ import { VacanciesModule } from './modules/vacancies/vacancies.module';
 import { ProfileModule } from './modules/profile/profile.module';
 import { ProposalsModule } from './modules/proposals/proposals.module';
 import { ContractsModule } from './modules/contracts/contracts.module';
+import { MessageModule } from './modules/chats/message/message.module';
+import { ChatsModule } from './modules/chats/chats.module';
 
 
 @Module({
@@ -37,7 +39,6 @@ import { ContractsModule } from './modules/contracts/contracts.module';
     PasswordResetModule,
     MailModule,
     ProfileModule,
-
     MulterModule.register({
       dest: './uploads',
     }),
@@ -45,7 +46,9 @@ import { ContractsModule } from './modules/contracts/contracts.module';
     VacanciesModule,
     ProposalsModule,
     ContactsModule,
-    ContractsModule
+    ContractsModule, 
+    MessageModule,
+    ChatsModule
   ],
 })
 export class AppModule { }
