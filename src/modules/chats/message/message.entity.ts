@@ -18,6 +18,15 @@ export default class MessageEntity {
   @Column({ type: 'text'})
   messageBody: string;
 
+  @Column({
+    type: 'enum',
+    enum: [
+      'UserMessage',
+      'SystemMessage'
+    ]
+  })
+  type: string;
+
   @ManyToOne(() => UserEntity, (users: UserEntity) => users.id, {
     nullable: true,
   })
