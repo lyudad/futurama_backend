@@ -29,7 +29,9 @@ export default class MessageService {
             const message = await this.messageRepository
                 .createQueryBuilder('message')
                 .where('chatId = :chatId', { chatId })
-                .leftJoinAndSelect('message.author', 'user')
+                .leftJoin('message.author', 'users')
+                .addSelect(['users.id', 'users.firstName', 'users.lastName', 'users.photo'])
+                .leftJoinAndSelect('message.chatId', 'chats')
                 .getMany();
 
             return message;
