@@ -13,6 +13,11 @@ import MessageDTO from './messageDTO';
 export class MessageController {
     constructor(private readonly messageService: MessageService) { }
 
+    @Get('/last')
+    async getLastMessage(): Promise<MessageEntity> {
+        return await this.messageService.getLastMessage()
+    }
+
     @Get('/:id')
     async getMessagesByChatId(@Param('id') chatId: number): Promise<MessageEntity[]> {
         return await this.messageService.getMessagesByChatId(chatId);
@@ -20,6 +25,6 @@ export class MessageController {
 
     @Post('/send')
     async create(@Body() body: MessageDTO): Promise<MessageEntity> {
-        return await this.messageService.create(body);
-    }
+        return await this.messageService.createMessage(body);
+    } 
 }

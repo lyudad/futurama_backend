@@ -6,13 +6,8 @@ import {
   Req
 } from '@nestjs/common';
 import { Request } from 'express';
-import ChatsEntity from './chats.entity';
 import { ChatsService } from './chats.service';
 import { ChatsDTO } from './chatsDTO';
-import MessageEntity from './message/message.entity';
-import MessageService from './message/message.service';
-import MessageDTO from './message/messageDTO';
-
 
 @Controller('/chats')
 export class ChatsController {
@@ -28,4 +23,3 @@ export class ChatsController {
     return await this.chatsService.getMyChats(req);
   }
 }
-
