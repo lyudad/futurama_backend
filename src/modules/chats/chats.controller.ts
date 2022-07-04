@@ -1,15 +1,13 @@
 import {
   Body,
   Controller,
-  Post
+  Get,
+  Post,
+  Req
 } from '@nestjs/common';
-import ChatsEntity from './chats.entity';
+import { Request } from 'express';
 import { ChatsService } from './chats.service';
 import { ChatsDTO } from './chatsDTO';
-import MessageEntity from './message/message.entity';
-import MessageService from './message/message.service';
-import MessageDTO from './message/messageDTO';
-
 
 @Controller('/chats')
 export class ChatsController {
@@ -19,5 +17,9 @@ export class ChatsController {
   async create(@Body() body: ChatsDTO): Promise<void> {
     return await this.chatsService.createChat(body);
   }
-}
 
+  @Get('/mychats')
+  async getMyChats(@Req() req: Request): Promise<object> {
+    return await this.chatsService.getMyChats(req);
+  }
+}
