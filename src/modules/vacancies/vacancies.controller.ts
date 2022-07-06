@@ -1,4 +1,4 @@
-import { Controller, Post, Delete, Get, Body, Param } from '@nestjs/common';
+import { Controller, Post, Delete, Get, Body, Param, Patch } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SkillsDTO } from './dto/skills.dto';
 import { CategoriesDTO } from './dto/categories.dto';
@@ -10,7 +10,7 @@ import { findVacanciesDTO } from './dto/findVacancies.dto';
 @ApiTags('Create vacancies')
 @Controller('search_work')
 export class VacanciesController {
-  constructor(private readonly vacanciesService: VacanciesService) {}
+  constructor(private readonly vacanciesService: VacanciesService) { }
 
   @ApiOperation({ summary: 'Creating vacancy' })
   @ApiResponse({ status: 201, type: VacanciesDTO })
@@ -18,6 +18,16 @@ export class VacanciesController {
   async createVacancy(@Body() body: VacanciesDTO): Promise<void> {
     try {
       await this.vacanciesService.createVacancy(body);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @ApiOperation({ summary: 'Change status' })
+  @Post('/status')
+  async changeStatus(@Body() body: { status: boolean, id: number; }): Promise<void> {
+    try {
+      await this.vacanciesService.changeVacancyStatus(body.id, body.status);
     } catch (error) {
       throw error;
     }
