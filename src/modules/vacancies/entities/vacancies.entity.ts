@@ -76,6 +76,10 @@ export class VacanciesEntity {
   @Column()
   timePerWeek: number;
 
+  @ApiProperty({ example: 'false', description: 'jon in archive' })
+  @Column()
+  isActive: boolean;
+
   @ApiProperty({ example: '011232124811', description: 'creation date' })
   @CreateDateColumn()
   createdAt: Date;

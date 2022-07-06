@@ -10,7 +10,7 @@ import { findVacanciesDTO } from './dto/findVacancies.dto';
 @ApiTags('Create vacancies')
 @Controller('search_work')
 export class VacanciesController {
-  constructor(private readonly vacanciesService: VacanciesService) {}
+  constructor(private readonly vacanciesService: VacanciesService) { }
 
   @ApiOperation({ summary: 'Creating vacancy' })
   @ApiResponse({ status: 201, type: VacanciesDTO })
@@ -23,10 +23,20 @@ export class VacanciesController {
     }
   }
 
+  @ApiOperation({ summary: 'Change status' })
+  @Post('/status')
+  async changeStatus(@Body() body: { status: boolean, id: number; }): Promise<void> {
+    try {
+      await this.vacanciesService.changeVacancyStatus(body.id, body.status);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   @ApiOperation({ summary: 'Delete vacancy' })
   @ApiResponse({ status: 200, type: VacanciesDTO })
-  @Delete('vacancies')
-  async deleteVacancy(@Body() body: VacanciesDTO): Promise<void> {
+  @Delete('/status')
+  async deleteVacancy(@Body() body: {id: number}): Promise<void> {
     try {
       await this.vacanciesService.deleteVacancy(body.id);
     } catch (error) {

@@ -23,15 +23,23 @@ export class VacanciesService {
     private readonly categoriesRepository: Repository<CategoriesEntity>,
     @InjectRepository(VacanciesEntity)
     private readonly vacanciesRepository: Repository<VacanciesEntity>,
-  ) {}
+  ) { }
 
   async createVacancy(Vacancy: VacanciesDTO): Promise<VacanciesEntity> {
     try {
       await this.vacanciesRepository.save({
-        ...Vacancy,
+        ...Vacancy, isActive: true,
         skills: Vacancy.skills.map((skill: number) => ({ id: skill })),
       });
       throw new HttpException('Done', HttpStatus.OK);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async changeVacancyStatus(id: number, status: boolean): Promise<void> {
+    try {
+      this.vacanciesRepository.update(id, { isActive: status });
     } catch (error) {
       throw error;
     }
@@ -69,6 +77,7 @@ export class VacanciesService {
     try {
       let database = await this.vacanciesRepository
         .createQueryBuilder('vacancy')
+        .where('vacancy.isActive = :status', { status: true })
         .leftJoinAndSelect('vacancy.category', 'category')
         .leftJoinAndSelect('vacancy.skills', 'skills')
         .leftJoinAndSelect('vacancy.owner', 'users');
@@ -253,7 +262,7 @@ export class VacanciesService {
     try {
       const skills = await this.skillsRepository
         .createQueryBuilder()
-        .orderBy('id')
+        .orderBy('skill')
         .getMany();
       if (!skills) throw new HttpException('400', HttpStatus.BAD_REQUEST);
       return skills;

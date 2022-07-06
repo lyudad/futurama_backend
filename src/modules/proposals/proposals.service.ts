@@ -7,7 +7,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
-
 import { ContactsService } from '../user/contact-info/contacts.service';
 import { ProposalsEntity } from './proposals.entity';
 import { ProposalsDTO } from './proposalsDTO';
@@ -63,8 +62,8 @@ export class ProposalsService {
       .andWhere('proposals.type = :type', { type: "Invite" })
       .leftJoin('proposals.vacancy', 'vacancies')
       .addSelect(['vacancies.category', 'vacancies.id', 'vacancies.title', 'vacancies.description', 'vacancies.price'])
-      .leftJoinAndSelect('vacancies.category', 'categories')   
-      .leftJoinAndSelect('vacancies.skills', 'skills')      
+      .leftJoinAndSelect('vacancies.category', 'categories')
+      .leftJoinAndSelect('vacancies.skills', 'skills')
       .leftJoin('vacancies.owner', 'users')
       .addSelect(['users.firstName', 'users.lastName'])
       .getMany();
@@ -92,6 +91,7 @@ export class ProposalsService {
         .leftJoinAndSelect('vacancy.proposals', 'proposals')
         .leftJoin('proposals.user', 'users')
         .addSelect(['users.id', 'users.firstName', 'users.lastName', 'users.phone', 'users.photo'])
+        .orderBy('vacancy.createdAt', 'DESC')
         .getMany();
       return vacancies;
     } catch (error) {
