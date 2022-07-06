@@ -77,6 +77,7 @@ export class VacanciesService {
     try {
       let database = await this.vacanciesRepository
         .createQueryBuilder('vacancy')
+        .where('vacancy.isActive = :status', { status: true })
         .leftJoinAndSelect('vacancy.category', 'category')
         .leftJoinAndSelect('vacancy.skills', 'skills')
         .leftJoinAndSelect('vacancy.owner', 'users');

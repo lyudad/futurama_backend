@@ -1,4 +1,4 @@
-import { Controller, Post, Delete, Get, Body, Param, Patch } from '@nestjs/common';
+import { Controller, Post, Delete, Get, Body, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SkillsDTO } from './dto/skills.dto';
 import { CategoriesDTO } from './dto/categories.dto';
@@ -35,8 +35,8 @@ export class VacanciesController {
 
   @ApiOperation({ summary: 'Delete vacancy' })
   @ApiResponse({ status: 200, type: VacanciesDTO })
-  @Delete('vacancies')
-  async deleteVacancy(@Body() body: VacanciesDTO): Promise<void> {
+  @Delete('/status')
+  async deleteVacancy(@Body() body: {id: number}): Promise<void> {
     try {
       await this.vacanciesService.deleteVacancy(body.id);
     } catch (error) {
