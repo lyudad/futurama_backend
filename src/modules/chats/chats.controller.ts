@@ -22,4 +22,9 @@ export class ChatsController {
   async getMyChats(@Req() req: Request): Promise<object> {
     return await this.chatsService.getMyChats(req);
   }
+
+  @Post('/chatexist')
+  async isChatExist(@Body() body: { freelancerId: number, vacancyId: number; }): Promise<boolean> {
+    return await this.chatsService.isChatExist(body.freelancerId, body.vacancyId);
+  }
 }

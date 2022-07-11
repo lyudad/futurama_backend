@@ -26,6 +26,17 @@ export class ChatsService {
         }
     }
 
+    async isChatExist(freelancerId: number, vacancyId: number): Promise<boolean> {
+        const chats = await this.chatsRepository
+            .createQueryBuilder('chats')
+            .where('freelancerId = :freelancerId', { freelancerId })
+            .andWhere('vacancyId = :vacancyId', { vacancyId })
+            .getCount();
+        if (chats === 1) {
+            return true;
+        } else return false;
+    }
+
     async getMyChats(req: Request): Promise<object> {
         const id = ContactsService.extractId(req);
         const chats = await this.chatsRepository
@@ -37,7 +48,8 @@ export class ChatsService {
             .addSelect(['vacancies.id', 'vacancies.title', 'vacancies.description', 'vacancies.englishLevel', 'vacancies.price', 'vacancies.timePerWeek'])
             .leftJoin('vacancies.owner', 'users')
             .addSelect(['users.id', 'users.firstName', 'users.lastName', 'users.photo'])
-            .orWhere('vacancies.owner = :id', { id })            
+            .orWhere('vacancies.owner = :id', { id })
+            .orderBy('chats.createdAt', 'DESC')
             .getMany();
         return chats;
     }

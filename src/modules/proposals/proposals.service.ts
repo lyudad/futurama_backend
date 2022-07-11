@@ -34,6 +34,13 @@ export class ProposalsService {
       throw error;
     }
   }
+  async changeProposalStatus(id: number, status: string): Promise<void> {
+    try {
+      this.proposalsRepository.update(id, { status: status });
+    } catch (error) {
+      throw error;
+    }
+  }
   async getProposalsByVacancyId(id: number): Promise<object> {
     const proposals = await this.proposalsRepository
       .createQueryBuilder('proposals')
