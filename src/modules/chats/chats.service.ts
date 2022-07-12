@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ChatsDTO } from './chatsDTO';
@@ -52,5 +52,20 @@ export class ChatsService {
             .orderBy('chats.createdAt', 'DESC')
             .getMany();
         return chats;
+    }
+    async getChatDataById(chatId: number): Promise<object> {
+        try {
+            const chatData = await this.chatsRepository
+                .createQueryBuilder('chat')
+                .where('chat.id = :chatId', { chatId })
+                .leftJoin('chat.vacancy', 'vacancies')
+                .addSelect(['vacancies.id'])
+                .leftJoin('chat.freelancer', 'users')
+                .addSelect(['users.id'])
+                .getOne();
+            return chatData;
+        } catch (error) {
+            throw new HttpException(error.message, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 }

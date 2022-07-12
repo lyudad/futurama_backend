@@ -19,7 +19,8 @@ export class ProposalsEntity {
     type: 'enum',
     enum: [
       'Proposal',
-      'Invite'
+      'Invite',
+      'Offer'
     ]
   })
   type: string;
@@ -41,7 +42,8 @@ export class ProposalsEntity {
     enum: [
       'Accepted',
       'Pending',
-      'Declined'
+      'Declined',
+      'Deleted'
     ]
   })
   status: string;

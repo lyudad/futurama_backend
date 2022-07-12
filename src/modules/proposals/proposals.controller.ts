@@ -33,10 +33,18 @@ export class ProposalsController {
   async getInvitesByUserId(@Req() req: Request): Promise<object> {
     return await this.proposalsService.getInvitesByUserId(req);
   }
+  @Get('/myoffers')
+  async getOffersByUserId(@Req() req: Request): Promise<object> {
+    return await this.proposalsService.getOffersByUserId(req);
+  }
   @Get('/check/:id')
   async checkProposalsExist(@Param('id') vacancyId: number, @Req() req: Request): Promise<boolean> {
     return await this.proposalsService.checkProposalsExist(req, vacancyId);
   }
+  // @Get('/checkoffer/:id')
+  // async checkOfferExist(@Param('id') vacancyId: number, @Req() req: Request): Promise<boolean> {
+  //   return await this.proposalsService.checkProposalsExist(req, vacancyId);
+  // }
   @Get('/myjobs')
   async getVacanciesByOwnerId(@Req() req: Request): Promise<object[]> {
     return await this.proposalsService.getVacanciesByOwnerId(req);

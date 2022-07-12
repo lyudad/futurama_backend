@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Req
 } from '@nestjs/common';
@@ -21,6 +22,11 @@ export class ChatsController {
   @Get('/mychats')
   async getMyChats(@Req() req: Request): Promise<object> {
     return await this.chatsService.getMyChats(req);
+  }
+
+  @Get('/:id')
+  async getChatDataById(@Param('id') chatId: number): Promise<object> {
+      return await this.chatsService.getChatDataById(chatId);
   }
 
   @Post('/chatexist')

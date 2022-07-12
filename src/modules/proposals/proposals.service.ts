@@ -46,6 +46,7 @@ export class ProposalsService {
       .createQueryBuilder('proposals')
       .where('vacancyId = :id', { id })
       .andWhere('proposals.type = :type', { type: "Proposal" })
+      .andWhere('proposals.status != :status', { status: "Deleted" })
       .leftJoinAndSelect('proposals.user', 'users')
       .leftJoinAndSelect('proposals.vacancy', 'vacancy')
       .getMany();
@@ -57,6 +58,7 @@ export class ProposalsService {
       .createQueryBuilder('proposals')
       .where('userId = :id', { id })
       .andWhere('proposals.type = :type', { type: "Proposal" })
+      .andWhere('proposals.status != :status', { status: "Deleted" })
       .leftJoinAndSelect('proposals.vacancy', 'vacancies')
       .getMany();
     return proposals;
@@ -67,6 +69,7 @@ export class ProposalsService {
       .createQueryBuilder('proposals')
       .where('userId = :id', { id })
       .andWhere('proposals.type = :type', { type: "Invite" })
+      .andWhere('proposals.status != :status', { status: "Deleted" })
       .leftJoin('proposals.vacancy', 'vacancies')
       .addSelect(['vacancies.category', 'vacancies.id', 'vacancies.title', 'vacancies.description', 'vacancies.price'])
       .leftJoinAndSelect('vacancies.category', 'categories')
@@ -75,6 +78,18 @@ export class ProposalsService {
       .addSelect(['users.firstName', 'users.lastName'])
       .getMany();
     return invites;
+  }
+  async getOffersByUserId(req: Request): Promise<object> {
+    const id = ContactsService.extractId(req);
+    const proposals = await this.proposalsRepository
+      .createQueryBuilder('proposals')
+      .where('userId = :id', { id })
+      .andWhere('proposals.type = :type', { type: "Offer" })
+      .andWhere('proposals.status != :status', { status: "Deleted" })
+      .leftJoinAndSelect('proposals.vacancy', 'vacancies')
+      .leftJoinAndSelect('vacancies.skills', 'skills')
+      .getMany();
+    return proposals;
   }
   async checkProposalsExist(req: Request, vacancyId: number): Promise<boolean> {
     const userId = ContactsService.extractId(req);
