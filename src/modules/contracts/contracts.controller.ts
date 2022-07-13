@@ -18,7 +18,7 @@ export class ContractsController {
             if(!headers.token){
                 throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED,);
             }
-            return this.contractsService.getFreelancerContracts(encodeJwt(headers));
+            return this.contractsService.getFreelancerContracts(encodeJwt(headers.token));
         } catch (error) {
             throw error;
         }
@@ -32,7 +32,7 @@ export class ContractsController {
             if(!headers.token){
                 throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED,);
             }
-            return this.contractsService.getJobOwnerContracts(encodeJwt(headers));
+            return this.contractsService.getJobOwnerContracts(encodeJwt(headers.token));
         } catch (error) {
             throw error;
         }
@@ -52,7 +52,7 @@ export class ContractsController {
     @ApiOperation({ summary: 'Update contract' })
     @ApiResponse({ status: 201, type: ContractsDTO })
     @Put('update')
-    async updateEducation(@Body() body: ContractsDTO): Promise<void> {  
+    async updateEducation(@Body() body): Promise<void> {  
         try {
         await this.contractsService.updateContract(body);
         } catch (error) {
