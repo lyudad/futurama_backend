@@ -5,25 +5,33 @@ import { ChatsDTO } from './chatsDTO';
 import ChatsEntity from './chats.entity';
 import { Request } from 'express';
 import { ContactsService } from '../user/contact-info/contacts.service';
+import MessageEntity from './message/message.entity';
 
 @Injectable()
 export class ChatsService {
     constructor(
         @InjectRepository(ChatsEntity)
         private readonly chatsRepository: Repository<ChatsEntity>,
+        @InjectRepository(MessageEntity)
+        private readonly messageRepository: Repository<MessageEntity>,
     ) {
     }
 
     async createChat(chat: ChatsDTO): Promise<void> {
         try {
-            await this.chatsRepository
+            const newChat = await this.chatsRepository
                 .createQueryBuilder()
                 .insert()
                 .values({ ...chat })
                 .execute();
+            this.createSystemMessage({ messageBody: 'CHAT CREATED', author: null, type: 'SystemMessage', chatId: newChat.raw.insertId });
         } catch (error) {
             throw error;
         }
+    }
+
+    async createSystemMessage(newMessage: { messageBody: string, author: null, type: string, chatId: ChatsEntity; }): Promise<void> {
+        await this.messageRepository.createQueryBuilder().insert().values({ ...newMessage }).execute();
     }
 
     async isChatExist(freelancerId: number, vacancyId: number): Promise<boolean> {

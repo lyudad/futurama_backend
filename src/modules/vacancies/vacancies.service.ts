@@ -308,7 +308,7 @@ export class VacanciesService {
     try {
       const categories = await this.categoriesRepository
         .createQueryBuilder()
-        .orderBy('id')
+        .orderBy('category')
         .getMany();
       if (!categories) throw new HttpException('400', HttpStatus.BAD_REQUEST);
       return categories;
