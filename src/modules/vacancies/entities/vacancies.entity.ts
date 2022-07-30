@@ -68,15 +68,15 @@ export class VacanciesEntity {
   })
   englishLevel: string;
 
-  @ApiProperty({ example: '1000', description: 'price' })
+  @ApiProperty({ example: '1000', description: 'Price' })
   @Column()
   price: number;
 
-  @ApiProperty({ example: '40', description: 'time per week' })
+  @ApiProperty({ example: '40', description: 'Time per week' })
   @Column()
   timePerWeek: number;
 
-  @ApiProperty({ example: 'false', description: 'jon in archive' })
+  @ApiProperty({ example: 'false', description: 'Job in archive' })
   @Column()
   isActive: boolean;
 
@@ -84,7 +84,7 @@ export class VacanciesEntity {
   @CreateDateColumn()
   createdAt: Date;
 
-  @ApiProperty({ example: '011232124811', description: 'creation date' })
+  @ApiProperty({ example: '011232124811', description: 'updating date' })
   @UpdateDateColumn()
   updatedAt: Date;
 }

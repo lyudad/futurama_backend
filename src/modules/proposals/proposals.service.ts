@@ -34,13 +34,22 @@ export class ProposalsService {
       throw error;
     }
   }
+  async changeProposalStatus(id: number, status: string): Promise<void> {
+    try {
+      this.proposalsRepository.update(id, { status: status });
+    } catch (error) {
+      throw error;
+    }
+  }
   async getProposalsByVacancyId(id: number): Promise<object> {
     const proposals = await this.proposalsRepository
       .createQueryBuilder('proposals')
       .where('vacancyId = :id', { id })
       .andWhere('proposals.type = :type', { type: "Proposal" })
+      .andWhere('proposals.status != :status', { status: "Deleted" })
       .leftJoinAndSelect('proposals.user', 'users')
       .leftJoinAndSelect('proposals.vacancy', 'vacancy')
+      .orderBy('proposals.createdAt', 'DESC')
       .getMany();
     return proposals;
   }
@@ -50,7 +59,9 @@ export class ProposalsService {
       .createQueryBuilder('proposals')
       .where('userId = :id', { id })
       .andWhere('proposals.type = :type', { type: "Proposal" })
+      .andWhere('proposals.status != :status', { status: "Deleted" })
       .leftJoinAndSelect('proposals.vacancy', 'vacancies')
+      .orderBy('proposals.createdAt', 'DESC')
       .getMany();
     return proposals;
   }
@@ -60,6 +71,7 @@ export class ProposalsService {
       .createQueryBuilder('proposals')
       .where('userId = :id', { id })
       .andWhere('proposals.type = :type', { type: "Invite" })
+      .andWhere('proposals.status != :status', { status: "Deleted" })
       .leftJoin('proposals.vacancy', 'vacancies')
       .addSelect(['vacancies.category', 'vacancies.id', 'vacancies.title', 'vacancies.description', 'vacancies.price'])
       .leftJoinAndSelect('vacancies.category', 'categories')
@@ -68,6 +80,20 @@ export class ProposalsService {
       .addSelect(['users.firstName', 'users.lastName'])
       .getMany();
     return invites;
+  }
+  async getOffersByUserId(req: Request): Promise<object> {
+    const id = ContactsService.extractId(req);
+    const proposals = await this.proposalsRepository
+      .createQueryBuilder('proposals')
+      .where('userId = :id', { id })
+      .andWhere('proposals.type = :type', { type: "Offer" })
+      .andWhere('proposals.status != :status', { status: "Deleted" })
+      .leftJoinAndSelect('proposals.vacancy', 'vacancies')
+      .leftJoin('vacancies.owner', 'users')
+      .addSelect(['users.id', 'users.firstName', 'users.lastName'])
+      .leftJoinAndSelect('vacancies.skills', 'skills')
+      .getMany();
+    return proposals;
   }
   async checkProposalsExist(req: Request, vacancyId: number): Promise<boolean> {
     const userId = ContactsService.extractId(req);
@@ -91,11 +117,44 @@ export class ProposalsService {
         .leftJoinAndSelect('vacancy.proposals', 'proposals')
         .leftJoin('proposals.user', 'users')
         .addSelect(['users.id', 'users.firstName', 'users.lastName', 'users.phone', 'users.photo'])
-        .orderBy('vacancy.createdAt', 'DESC')
+        .orderBy('vacancy.updatedAt', 'DESC')
         .getMany();
       return vacancies;
     } catch (error) {
       throw new ConflictException(error.sqlMessage);
     }
+  }
+
+  async getVacanciesForUser(req: Request, userId: number): Promise<object[]> {
+    const ownerId = ContactsService.extractId(req);
+    const vacancies = await this.vacanciesRepository
+      .createQueryBuilder('vacancy')
+      .where('ownerId = :ownerId', { ownerId })
+      .leftJoin('vacancy.proposals', 'proposals')
+      .leftJoin('proposals.user', 'users')
+      .orderBy('vacancy.createdAt', 'DESC')
+      .getMany();
+    const vacanciesWithProposals = await this.vacanciesRepository
+      .createQueryBuilder('vacancy')
+      .leftJoin('vacancy.proposals', 'proposals')
+      .leftJoin('proposals.user', 'users')
+      .where('proposals.user = :userId', { userId })
+      .andWhere('ownerId = :ownerId', { ownerId })
+      .orderBy('vacancy.createdAt', 'DESC')
+      .getMany();
+
+    return vacancies.filter(itemA => !vacanciesWithProposals.find(itemB => itemA.id === itemB.id));
+  }
+
+  async isOfferExist(vacancyId: number, freelancerId: number): Promise<boolean> {
+    const offer = await this.proposalsRepository
+      .createQueryBuilder('proposals')
+      .where('userId = :freelancerId', { freelancerId })
+      .andWhere('vacancyId = :vacancyId', { vacancyId })
+      .andWhere('proposals.type = :type', { type: "Offer" })
+      .getMany();
+    if (offer.length !== 0) {
+      return true;
+    } else return false;
   }
 }

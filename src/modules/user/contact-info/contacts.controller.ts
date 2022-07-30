@@ -30,12 +30,12 @@ export class ContactsController {
     }
   }
 
-  @Get('/all')
-  findAll(): Promise<UserEntity[]> {
-    try {
-      return this.ContactsService.find();
-    } catch {
-      throw new Error();
-    }
-  }
+  // @Get('/all')
+  // findAll(): Promise<UserEntity[]> {
+  //   try {
+  //     return this.ContactsService.find();
+  //   } catch {
+  //     throw new Error();
+  //   }
+  // }
 }

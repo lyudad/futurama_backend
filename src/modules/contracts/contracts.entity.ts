@@ -1,34 +1,34 @@
 import { Type } from 'class-transformer';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
 import { VacanciesEntity } from '../vacancies/entities/vacancies.entity';
-  
+
 @Entity('contracts')
 export class ContractsEntity {
-  
+
     @PrimaryGeneratedColumn()
     id: number;
-  
+
     @Column()
     title: string;
-  
+
     @Column()
     hourlyRate: number;
 
-    @Column()
+    @Column('text')
     description: string;
 
     @Type(() => Date)
-    @Column()
+    @CreateDateColumn()
     start: Date;
 
     @Type(() => Date)
-    @Column()
+    @UpdateDateColumn({ nullable: true })
     end: Date;
 
     @Column()
     active: boolean;
-  
+
     @ManyToOne(() => UserEntity)
     @JoinColumn()
     freelancer: UserEntity;
@@ -41,4 +41,3 @@ export class ContractsEntity {
     @JoinColumn()
     vacancy: VacanciesEntity;
 }
-  

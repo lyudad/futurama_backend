@@ -6,6 +6,7 @@ import MessageDTO from './messageDTO';
 
 @Injectable()
 export default class MessageService {
+    
     constructor(
         @InjectRepository(MessageEntity)
         private readonly messageRepository: Repository<MessageEntity>,

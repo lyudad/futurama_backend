@@ -17,7 +17,7 @@ export class findVacanciesDTO {
   @IsNotEmpty()
   skills: [string];
 
-  @ApiProperty({ example: 'Entermediate', description: 'english level' })
+  @ApiProperty({ example: 'Intermediate', description: 'english level' })
   @IsNotEmpty()
   englishLevel: string;
 
