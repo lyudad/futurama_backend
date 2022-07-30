@@ -49,6 +49,7 @@ export class ProposalsService {
       .andWhere('proposals.status != :status', { status: "Deleted" })
       .leftJoinAndSelect('proposals.user', 'users')
       .leftJoinAndSelect('proposals.vacancy', 'vacancy')
+      .orderBy('proposals.createdAt', 'DESC')
       .getMany();
     return proposals;
   }
@@ -60,6 +61,7 @@ export class ProposalsService {
       .andWhere('proposals.type = :type', { type: "Proposal" })
       .andWhere('proposals.status != :status', { status: "Deleted" })
       .leftJoinAndSelect('proposals.vacancy', 'vacancies')
+      .orderBy('proposals.createdAt', 'DESC')
       .getMany();
     return proposals;
   }
@@ -115,7 +117,7 @@ export class ProposalsService {
         .leftJoinAndSelect('vacancy.proposals', 'proposals')
         .leftJoin('proposals.user', 'users')
         .addSelect(['users.id', 'users.firstName', 'users.lastName', 'users.phone', 'users.photo'])
-        .orderBy('vacancy.createdAt', 'DESC')
+        .orderBy('vacancy.updatedAt', 'DESC')
         .getMany();
       return vacancies;
     } catch (error) {
